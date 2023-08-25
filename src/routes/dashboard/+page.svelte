@@ -11,7 +11,7 @@
     <div class="grid grid-cols-5 gap-x-2 gap-y-2">
       {#each data.propertyList as entry}
         <div>
-          <a href="/property/{entry.id}">
+          <a href="/dashboard/editProperty/{entry.id}">
             <img
               class="block m-auto cursor-pointer w-32 h-24"
               src={`data:image/jpeg;base64,${entry.thumbnail}`}
@@ -29,5 +29,5 @@
       {/each}
     </div>
   </div>
-  <div class="mx-auto">Analytics Here</div>
+  <div class="mx-auto"><p>Analytics Here</p></div>
 </div>

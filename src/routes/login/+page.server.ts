@@ -9,13 +9,13 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-  default: async ({ cookies, request }) => {
+  default: async ({ fetch, cookies, request }) => {
     const data = await request.formData();
     const body = {
       username: data.get("username") as string,
       password: data.get("password") as string,
     };
-    const response = await api.post("api/Authenticate/login", body, null);
+    const response = await api.post(fetch, "api/Authenticate/login", undefined, body);
 
     if (response.data) {
       const userInfo: UserInfo = {

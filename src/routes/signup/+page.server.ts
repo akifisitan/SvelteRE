@@ -8,15 +8,14 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-  default: async ({ request }) => {
+  default: async ({ fetch, request }) => {
     const data = await request.formData();
     const body = {
       username: data.get("username") as string,
       password: data.get("password") as string,
       email: data.get("email") as string,
     };
-    console.log(body);
-    const response = await api.post("api/Authenticate/register", body, null);
+    const response = await api.post(fetch, "api/Authenticate/register", undefined, body);
 
     if (response.data) {
       throw redirect(303, "/login?accountCreated");

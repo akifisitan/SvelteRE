@@ -9,8 +9,6 @@
 
   const login: SubmitFunction = (input) => {
     loading = true;
-    console.log(input.formData.get("username"));
-    console.log(input.formData.get("password"));
 
     return async ({ update }) => {
       loading = false;
@@ -42,28 +40,30 @@
         <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">Login</h1>
         <form method="POST" use:enhance={login} class="space-y-4 md:space-y-6">
           <div>
-            <label class="block mb-2 text-sm font-medium text-white">
-              Username
-              <input
-                type="text"
-                name="username"
-                required
-                class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
-                placeholder="Enter username"
-              />
-            </label>
+            <label for="username" class="block mb-2 text-sm font-medium text-white">
+              Username</label
+            >
+            <input
+              type="text"
+              name="username"
+              id="username"
+              required
+              class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
+              placeholder="Enter username"
+            />
           </div>
           <div>
-            <label class="block mb-2 text-sm font-medium text-white">
-              Password
-              <input
-                type="password"
-                name="password"
-                required
-                placeholder="Enter Password"
-                class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
-              />
-            </label>
+            <label for="password" class="block mb-2 text-sm font-medium text-white">
+              Password</label
+            >
+            <input
+              type="password"
+              name="password"
+              id="password"
+              required
+              placeholder="Enter Password"
+              class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
+            />
           </div>
           <button
             type="submit"

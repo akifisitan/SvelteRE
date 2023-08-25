@@ -7,7 +7,7 @@
     <div>
       <a href="/property/{entry.id}">
         <img
-          class="block m-auto cursor-pointer w-32 h-24"
+          class="m-auto w-32 h-24"
           src={`data:image/jpeg;base64,${entry.thumbnail}`}
           alt="property"
         />

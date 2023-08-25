@@ -7,9 +7,6 @@
 
   const register: SubmitFunction = (input) => {
     loading = true;
-    console.log(input.formData.get("username"));
-    console.log(input.formData.get("password"));
-    console.log(input.formData.get("email"));
 
     return async ({ update }) => {
       loading = false;
@@ -36,43 +33,41 @@
         </h1>
         <form method="POST" use:enhance={register} class="space-y-4 md:space-y-6">
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-white">
-              Email
-              <input
-                type="email"
-                name="email"
-                id="email"
-                class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
-                placeholder="Enter email"
-                required
-              />
-            </label>
+            <label for="email" class="block mb-2 text-sm font-medium text-white"> Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
+              placeholder="Enter email"
+              required
+            />
           </div>
           <div>
             <label for="password" class="block mb-2 text-sm font-medium text-white">
-              Password
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Enter password"
-                class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
-                required
-              />
-            </label>
+              Password</label
+            >
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Enter password"
+              class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
+              required
+            />
           </div>
           <div>
             <label for="username" class="block mb-2 text-sm font-medium text-white">
-              Username
-              <input
-                type="text"
-                name="username"
-                id="username"
-                class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
-                placeholder="Enter username"
-                required
-              />
-            </label>
+              Username</label
+            >
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
+              placeholder="Enter username"
+              required
+            />
           </div>
           <button
             type="submit"
