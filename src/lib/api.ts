@@ -1,6 +1,6 @@
 import { error, json } from "@sveltejs/kit";
 
-const base = "http://localhost:5000";
+const base = "http://127.0.0.1:5000";
 
 async function send({ method, path, data, token }) {
   const options = { method, headers: {} };
