@@ -25,6 +25,9 @@ export const actions: Actions = {
       };
       cookies.set("session", JSON.stringify(userInfo), {
         path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
         expires: new Date(response.data.expiration),
       });
 
