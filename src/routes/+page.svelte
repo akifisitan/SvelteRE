@@ -4,4 +4,4 @@
   export let data;
 </script>
 
-<PropertyTable properties={data} />
+<PropertyTable properties={data.propertyList} />

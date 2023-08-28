@@ -6,7 +6,7 @@
   let loading = true;
 
   async function getMarkers() {
-    const response = await api.get(fetch, "Property/getMapData");
+    const response = await api.get(fetch, "Property/getAllMapData");
     console.log(response);
     loading = false;
     return response.data;

@@ -9,7 +9,6 @@
 
   const createProperty = ({ formData }) => {
     loading = true;
-    console.log(formData);
 
     return async ({ update }) => {
       loading = false;

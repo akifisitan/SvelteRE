@@ -1,6 +1,6 @@
 import { error, json } from "@sveltejs/kit";
 
-const base = "http://127.0.0.1:5000";
+const base = "http://127.0.0.1:5148";
 
 async function send(
   fetch: Function,
@@ -25,8 +25,6 @@ async function send(
     options.headers["Authorization"] = `Bearer ${token}`;
   }
 
-  console.log("Options:");
-  console.log(options);
 
   const response = await fetch(`${base}/${path}`, options);
   if (response) {

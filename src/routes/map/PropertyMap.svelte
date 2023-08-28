@@ -20,16 +20,18 @@
 
 <LeafletMap options={mapOptions}>
   <TileLayer url={tileUrl} options={tileLayerOptions} />
-  {#each markerData as property}
-    <Marker latLng={[property.latitude, property.longitude]}>
-      <Popup
-        >Price: {property.price} ({property.currency})<br /> Status:{" "}
-        {property.status}
-        <br />
-        Type: {property.type}
-        <br />
-        <a href="/property/{property.id}">Details</a>
-      </Popup>
-    </Marker>
-  {/each}
+  {#if markerData}
+    {#each markerData as property}
+      <Marker latLng={[property.latitude, property.longitude]}>
+        <Popup
+          >Price: {property.price} ({property.currency})<br /> Status:{" "}
+          {property.status}
+          <br />
+          Type: {property.type}
+          <br />
+          <a href="/property/{property.id}">Details</a>
+        </Popup>
+      </Marker>
+    {/each}
+  {/if}
 </LeafletMap>
