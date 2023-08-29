@@ -3,13 +3,15 @@
   import * as api from "$lib/api";
   import PropertyMap from "./PropertyMap.svelte";
 
-  let loading = true;
+  let loading = false;
 
   async function getMarkers() {
-    const response = await api.get(fetch, "Property/getAllMapData");
-    console.log(response);
-    loading = false;
-    return response.data;
+    try {
+      const response = await api.get(fetch, "Property/getAllMapData");
+      return response.data;
+    } catch (e) {
+      return null;
+    }
   }
 </script>
 

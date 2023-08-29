@@ -4,11 +4,11 @@ import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
-  const response = await api.get(fetch, `Property/getById?id=${params.slug}`);
+  const { data, status } = await api.get(fetch, `Property/getById?id=${params.id}`);
 
-  if (response.status !== 200) {
+  if (status !== 200) {
     throw error(404, "Not found");
   }
 
-  return { property: response.data as PropertyDetails };
+  return { property: data as PropertyDetails };
 };

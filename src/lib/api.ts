@@ -1,4 +1,4 @@
-import { error, json } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 
 const base = "http://127.0.0.1:5148";
 
@@ -25,13 +25,19 @@ async function send(
     options.headers["Authorization"] = `Bearer ${token}`;
   }
 
-
-  const response = await fetch(`${base}/${path}`, options);
-  if (response) {
-    const text = await response.text();
-    return { data: text ? JSON.parse(text) : null, status: response.status };
+  try {
+    const response = await fetch(`${base}/${path}`, options);
+    if (response) {
+      const text = await response.text();
+      return { data: text ? JSON.parse(text) : null, status: response.status };
+    }
+    return { data: null, status: response.status };
+  } catch (e: any) {
+    if (e.message === "fetch failed") {
+      throw error(503, { message: "Server is offline" });
+    }
+    throw error(500, { message: e.message });
   }
-  throw error(500, `Cannot access the server`);
 }
 
 export function get(fetch: Function, path: string, token?: string | null) {
