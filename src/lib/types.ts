@@ -19,15 +19,15 @@ export interface ShowcaseProperty {
   price: number;
 }
 
-export interface PropertyDetails {
+export interface DetailedProperty {
   id: number;
+  price: number;
   startDate: string;
   endDate: string;
   latitude: number;
   longitude: number;
-  propertyImages: string[];
-  propertyType: string;
-  propertyStatus: string;
+  images: string[];
+  type: string;
+  status: string;
   currency: string;
-  price: number;
 }

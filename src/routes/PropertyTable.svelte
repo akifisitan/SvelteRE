@@ -14,7 +14,7 @@
           {`(${property.status})`}
           <br />
           {property.price}
-          {`(${property.currency})`}
+          {property.currency}
         </p>
       </div>
     {/each}

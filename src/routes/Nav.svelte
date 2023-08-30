@@ -14,10 +14,13 @@
       {#if $page.data.user.roles.includes("Admin")}
         <a href="/admin" class="btn btn-ghost normal-case text-base"> Admin </a>
       {/if}
-      <a href="/dashboard" class="btn btn-ghost normal-case text-base">{$page.data.user.username}</a
+      <a href="/dashboard" class="btn btn-ghost normal-case text-base text-cyan-500"
+        >{$page.data.user.username}</a
       >
       <form class="logout" action="/logout" method="POST" use:enhance>
-        <button type="submit" class="btn btn-ghost normal-case text-base"> Logout </button>
+        <button type="submit" class="btn btn-ghost normal-case text-base text-red-700">
+          Logout
+        </button>
       </form>
     {:else}
       <a href="/login" class="btn btn-ghost normal-case text-base"> Login </a>

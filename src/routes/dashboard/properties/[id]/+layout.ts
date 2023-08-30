@@ -1,6 +1,7 @@
 import * as api from "$lib/api";
 import { error } from "@sveltejs/kit";
 import type { LayoutLoad } from "./$types";
+import type { DetailedProperty } from "$lib/types";
 
 export const load: LayoutLoad = async ({ fetch, params }) => {
   const response = await api.get(fetch, `Property/getById?id=${params.id}`);
@@ -9,5 +10,5 @@ export const load: LayoutLoad = async ({ fetch, params }) => {
     throw error(404, "Not found");
   }
 
-  return { property: response.data };
+  return { property: response.data as DetailedProperty };
 };

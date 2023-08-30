@@ -123,14 +123,12 @@
     </li>
     <li>
       <div class="flex">
-        <button class="btn btn-warning min-w-full mx-auto" on:click={clearFilters}>
+        <button class="btn btn-neutral min-w-full mx-auto" on:click={clearFilters}>
           Clear Filters
         </button>
       </div>
       <div class="flex">
-        <button class="btn btn-primary min-w-full mx-auto" on:click={filter}>
-          Apply Filters
-        </button>
+        <button class="btn btn-accent min-w-full mx-auto" on:click={filter}> Apply Filters </button>
       </div>
     </li>
   </ul>

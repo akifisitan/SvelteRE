@@ -1,5 +1,5 @@
 import * as api from "$lib/api";
-import type { PropertyDetails } from "$lib/types";
+import type { DetailedProperty } from "$lib/types";
 import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
@@ -10,5 +10,5 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
     throw error(404, "Not found");
   }
 
-  return { property: data as PropertyDetails };
+  return { property: data as DetailedProperty };
 };

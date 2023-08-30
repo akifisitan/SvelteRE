@@ -9,7 +9,7 @@
         <img
           class="block m-auto cursor-pointer w-32 h-24"
           src={property.thumbnail}
-          alt="property"
+          alt="User Property View"
         />
       </a>
       <p class="text-center">
@@ -17,7 +17,7 @@
         {`(${property.status})`}
         <br />
         {property.price}
-        {`(${property.currency})`}
+        {property.currency}
       </p>
     </div>
   {/each}
