@@ -18,20 +18,36 @@
   };
 </script>
 
-<LeafletMap options={mapOptions}>
-  <TileLayer url={tileUrl} options={tileLayerOptions} />
-  {#if markerData}
-    {#each markerData as property}
-      <Marker latLng={[property.latitude, property.longitude]}>
-        <Popup
-          >Price: {property.price} ({property.currency})<br /> Status:{" "}
-          {property.status}
-          <br />
-          Type: {property.type}
-          <br />
-          <a href="/property/{property.id}">Details</a>
-        </Popup>
-      </Marker>
-    {/each}
-  {/if}
-</LeafletMap>
+<div class="map-container mx-auto">
+  <div class="map m-auto">
+    <LeafletMap options={mapOptions}>
+      <TileLayer url={tileUrl} options={tileLayerOptions} />
+      {#if markerData}
+        {#each markerData as property}
+          <Marker latLng={[property.latitude, property.longitude]}>
+            <Popup
+              >Price: {property.price} ({property.currency})<br /> Status:{" "}
+              {property.status}
+              <br />
+              Type: {property.type}
+              <br />
+              <a href="/property/{property.id}">Details</a>
+            </Popup>
+          </Marker>
+        {/each}
+      {/if}
+    </LeafletMap>
+  </div>
+</div>
+
+<style>
+  .map-container {
+    height: 80vh;
+    width: 60vw;
+  }
+  .map {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+</style>
