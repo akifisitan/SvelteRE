@@ -1,28 +1,31 @@
 <script>
   import "leaflet/dist/leaflet.css";
-  import { LeafletMap, Marker, TileLayer, Popup } from "svelte-leafletjs";
-  import { centerLocation, isWithinTurkeyBounds } from "$lib/constants";
+  import { LeafletMap, Marker, TileLayer } from "svelte-leafletjs";
+  import { isWithinTurkeyBounds } from "$lib/constants";
+
+  export let latitude;
+  export let longitude;
+  let leafletMap;
+  let marker;
+
+  const mapOptions = {
+    center: [latitude, longitude],
+    zoom: 5,
+    zoomControl: false,
+    attributionControl: false,
+  };
 
   const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   const tileLayerOptions = {
     minZoom: 5,
     maxZoom: 7,
   };
-  const mapOptions = {
-    center: centerLocation,
-    zoom: 5,
-    zoomControl: false,
-    attributionControl: false,
-  };
-  let leafletMap;
-  let marker;
-  export let latitude;
-  export let longitude;
 
   function updateMarker() {
     const m = marker.getMarker();
     const markerData = m.getLatLng();
     if (isWithinTurkeyBounds(markerData.lat, markerData.lng)) {
+      console.log("yes");
       leafletMap.getMap().setView(markerData);
       latitude = markerData.lat;
       longitude = markerData.lng;
@@ -40,7 +43,7 @@
       <Marker
         events={["dragend"]}
         bind:this={marker}
-        latLng={centerLocation}
+        latLng={[latitude, longitude]}
         on:dragend={updateMarker}
         options={{ draggable: true }}
       />

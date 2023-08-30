@@ -1,6 +1,6 @@
 <script>
   import { centerLat, centerLong } from "$lib/constants";
-  import CreatePropertyMap from "./CreatePropertyMap.svelte";
+  import InteractiveMap from "$lib/components/InteractiveMap.svelte";
   import * as api from "$lib/api";
   import { goto } from "$app/navigation";
 
@@ -178,7 +178,7 @@
     <div class="mx-auto mr-4">
       <div>
         <h1>Select Property Location</h1>
-        <CreatePropertyMap bind:latitude bind:longitude />
+        <InteractiveMap bind:latitude bind:longitude />
       </div>
       <div>
         <h1 class="pb-2">Image Preview</h1>

@@ -9,6 +9,10 @@
   <PreloadingIndicator />
 {/if}
 
+<svelte:head>
+  <title>SvelteRE</title>
+</svelte:head>
+
 <Nav />
 
 <main>
