@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
   ]);
 
   if (!types.data || !statuses.data || !currencies.data) {
-    throw error(404, "Could not download dropdown items");
+    throw error(500, "Could not download dropdown items");
   }
 
   return { types: types.data, statuses: statuses.data, currencies: currencies.data };

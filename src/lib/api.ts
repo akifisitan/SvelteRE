@@ -2,8 +2,10 @@ import { error } from "@sveltejs/kit";
 
 const base = "http://127.0.0.1:5148";
 
+const cache = new Map();
+
 async function send(
-  fetch: Function,
+  fetch: typeof globalThis.fetch,
   method: string,
   path: string,
   token?: string | null,
@@ -27,11 +29,9 @@ async function send(
 
   try {
     const response = await fetch(`${base}/${path}`, options);
-    if (response) {
-      const text = await response.text();
-      return { data: text ? JSON.parse(text) : null, status: response.status };
-    }
-    return { data: null, status: response.status };
+    const text = await response.text();
+
+    return { data: text ? JSON.parse(text) : null, status: response.status };
   } catch (e: any) {
     if (e.message === "fetch failed") {
       throw error(503, { message: "Server is offline" });
@@ -40,16 +40,16 @@ async function send(
   }
 }
 
-export function get(fetch: Function, path: string, token?: string | null) {
+export function get(fetch: typeof globalThis.fetch, path: string, token?: string | null) {
   return send(fetch, "GET", path, token);
 }
 
-export function del(fetch: Function, path: string, token?: string | null) {
+export function del(fetch: typeof globalThis.fetch, path: string, token?: string | null) {
   return send(fetch, "DELETE", path, token);
 }
 
 export function post(
-  fetch: Function,
+  fetch: typeof globalThis.fetch,
   path: string,
   token?: string | null,
   data?: object | null,
@@ -59,7 +59,7 @@ export function post(
 }
 
 export function put(
-  fetch: Function,
+  fetch: typeof globalThis.fetch,
   path: string,
   token?: string | null,
   data?: object | null,
