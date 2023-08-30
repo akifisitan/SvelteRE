@@ -14,8 +14,6 @@ export const load: PageLoad = async ({ fetch, url }) => {
     throw error(500, "Could not download dropdown items");
   }
 
-  console.log(`Making query to : Property/getPaginated${url.search}`);
-
   const { data, status } = await api.get(fetch, `Property/getPaginated${url.search}`, null);
 
   return {
