@@ -40,7 +40,7 @@
     form.append("Latitude", latitude.toFixed(2));
     form.append("Longitude", longitude.toFixed(2));
     for (const image of images) {
-      form.append("Photos", image);
+      form.append("Images", image);
     }
     const response = await api.post(fetch, "Property", data.user.token, null, form);
     switch (response.status) {
@@ -146,11 +146,11 @@
         />
       </div>
       <div>
-        <label for="photos" class="label">Property Images</label>
+        <label for="images" class="label">Property Images</label>
         <input
           type="file"
-          name="Photos"
-          id="photos"
+          name="Images"
+          id="images"
           multiple={true}
           required
           accept=".jpg, .jpeg, .png"

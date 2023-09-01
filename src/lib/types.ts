@@ -19,6 +19,11 @@ export interface ShowcaseProperty {
   price: number;
 }
 
+export interface PropertyImage {
+  id: number;
+  value: string;
+}
+
 export interface DetailedProperty {
   id: number;
   price: number;
@@ -26,7 +31,7 @@ export interface DetailedProperty {
   endDate: string;
   latitude: number;
   longitude: number;
-  images: string[];
+  images: PropertyImage[];
   type: string;
   status: string;
   currency: string;

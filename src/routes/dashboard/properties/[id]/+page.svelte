@@ -1,4 +1,5 @@
 <script>
+  import { formatDate } from "$lib/date";
   export let data;
   const property = data?.property;
 </script>
@@ -10,14 +11,14 @@
   Type: {property.type}
   Price: {property.price}
   Status: {property.status}
-  Start Date: {property.startDate}
-  End Date: {property.endDate}
+  Start Date: {formatDate(property.startDate)}
+  End Date: {formatDate(property.endDate)}
   Location: Latitude: {property.latitude}
   Longitude: {property.longitude}
 </p>
 
 <div>
-  {#each property.images as image}
-    <img src={image} alt="{property.type}{property.status}" />
+  {#each property.images as image (image.id)}
+    <img src={image.value} alt="{property.type}{property.status}" />
   {/each}
 </div>

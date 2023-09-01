@@ -1,5 +1,4 @@
 import { redirect, type Actions } from "@sveltejs/kit";
-import { invalidateAll } from "$app/navigation";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async () => {

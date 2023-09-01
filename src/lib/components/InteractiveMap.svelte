@@ -25,7 +25,6 @@
     const m = marker.getMarker();
     const markerData = m.getLatLng();
     if (isWithinTurkeyBounds(markerData.lat, markerData.lng)) {
-      console.log("yes");
       leafletMap.getMap().setView(markerData);
       latitude = markerData.lat;
       longitude = markerData.lng;
