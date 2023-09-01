@@ -2,10 +2,16 @@
   import { page } from "$app/stores";
   import { enhance } from "$app/forms";
   import type { SubmitFunction } from "./$types.js";
+  import { onMount } from "svelte";
+  import { invalidateAll } from "$app/navigation";
 
   export let form;
   let accountCreated = $page.url.searchParams?.get("accountCreated") !== null;
   let loading = false;
+
+  onMount(() => {
+    invalidateAll();
+  });
 
   const login: SubmitFunction = (input) => {
     loading = true;

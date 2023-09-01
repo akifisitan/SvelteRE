@@ -1,21 +1,23 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { page } from "$app/stores";
-  import "../app.css";
 </script>
 
 <nav class="navbar bg-base-100">
   <div class="navbar-start">
-    <a href="/" class="btn btn-ghost font-bold normal-case text-lg"> RealEstate </a>
+    <a href="/" class="btn btn-ghost font-bold normal-case text-lg text-cyan-500"> SvelteRE </a>
     <a href="/map" class="btn btn-ghost normal-case text-base"> Map </a>
+    {#if $page.data.user}
+      <a href="/dashboard" class="btn btn-ghost normal-case text-base">Dashboard</a>
+    {/if}
   </div>
   <div class="navbar-end">
     {#if $page.data.user}
       {#if $page.data.user.roles.includes("Admin")}
         <a href="/admin" class="btn btn-ghost normal-case text-base"> Admin </a>
       {/if}
-      <a href="/dashboard" class="btn btn-ghost normal-case text-base text-cyan-500"
-        >{$page.data.user.username}</a
+      <button class="btn btn-ghost normal-case text-base"
+        >Logged in as {$page.data.user.username}</button
       >
       <form class="logout" action="/logout" method="POST" use:enhance>
         <button type="submit" class="btn btn-ghost normal-case text-base text-red-700">

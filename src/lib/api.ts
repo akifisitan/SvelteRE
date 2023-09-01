@@ -1,8 +1,6 @@
 import { error } from "@sveltejs/kit";
 
-const base = "http://127.0.0.1:5148";
-
-const cache = new Map();
+const base = "http://127.0.0.1:5000";
 
 async function send(
   fetch: typeof globalThis.fetch,

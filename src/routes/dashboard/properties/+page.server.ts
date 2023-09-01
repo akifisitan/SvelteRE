@@ -3,7 +3,7 @@ import * as api from "$lib/api";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ fetch, locals, route }) => {
-  if (!locals.user) throw redirect(302, `/login`);
+  if (!locals.user) throw redirect(303, `/login`);
 
   const response = await api.get(fetch, "Property/getUserShowcaseData", locals.user.token);
 
