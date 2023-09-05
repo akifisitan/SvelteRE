@@ -1,6 +1,7 @@
 import { error } from "@sveltejs/kit";
 
-const base = "http://127.0.0.1:5000";
+const localDev = false;
+const base = localDev ? "http://127.0.0.1:5000" : "https://realestateapp-api.hop.sh";
 
 async function send(
   fetch: typeof globalThis.fetch,

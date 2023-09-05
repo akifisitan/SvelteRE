@@ -5,7 +5,7 @@
 
 <nav class="navbar bg-base-100">
   <div class="navbar-start">
-    <a href="/" class="btn btn-ghost font-bold normal-case text-lg text-cyan-500"> SvelteRE </a>
+    <a href="/" class="btn btn-ghost font-bold normal-case text-lg text-orange-600"> SvelteRE </a>
     <a href="/map" class="btn btn-ghost normal-case text-base"> Map </a>
     {#if $page.data.user}
       <a href="/dashboard" class="btn btn-ghost normal-case text-base">Dashboard</a>

@@ -3,6 +3,8 @@ import type { PageLoad } from "./$types";
 import * as api from "$lib/api";
 import { error } from "@sveltejs/kit";
 
+const pageSize = 6;
+
 export const load: PageLoad = async ({ fetch, url }) => {
   const [types, statuses, currencies] = await Promise.all([
     api.get(fetch, "PropertyType/list"),
@@ -14,7 +16,16 @@ export const load: PageLoad = async ({ fetch, url }) => {
     throw error(500, "Could not download dropdown items");
   }
 
-  const { data, status } = await api.get(fetch, `Property/getPaginated${url.search}`, null);
+  console.log(url.searchParams);
+
+  const queryParams = url.search.slice(1);
+  const completeQueryParams = queryParams.length > 0 ? "&" + queryParams : "";
+
+  const { data, status } = await api.get(
+    fetch,
+    `Property/getPaginated?pageSize=${pageSize}&${completeQueryParams}`,
+    null
+  );
 
   return {
     propertyList: (data.items as Array<ShowcaseProperty>) ?? [],

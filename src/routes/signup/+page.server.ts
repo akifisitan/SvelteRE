@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-  default: async ({ fetch, request }) => {
+  default: async ({ request }) => {
     const data = await request.formData();
     const body = {
       username: data.get("username") as string,

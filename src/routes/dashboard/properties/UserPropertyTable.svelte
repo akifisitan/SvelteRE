@@ -2,7 +2,7 @@
   export let properties;
 </script>
 
-<div class="grid grid-cols-5 gap-x-2 gap-y-2">
+<div class="grid grid-cols-6 gap-x-2 gap-y-2">
   {#each properties as property}
     <div>
       <a href="/dashboard/properties/{property.id}">
