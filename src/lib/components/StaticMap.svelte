@@ -14,6 +14,7 @@
     zoom: 6,
     scrollWheelZoom: false,
     attributionControl: false,
+    dragging: false,
   };
 </script>
 
@@ -30,12 +31,14 @@
 
 <style>
   .map-container {
-    height: 80vh;
-    width: 60vw;
+    height: 35vw;
+    width: 55vw;
+    display: flex;
   }
   .map {
     height: 100%;
     width: 100%;
+    display: flex;
     position: relative;
   }
 </style>

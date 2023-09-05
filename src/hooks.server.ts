@@ -9,6 +9,11 @@ export const handle: Handle = async ({ event, resolve }) => {
       throw redirect(303, "/login");
     }
   }
+  if (event.url.pathname.startsWith("/admin")) {
+    if (!event.locals.user || !event.locals.user.roles?.includes("Admin")) {
+      throw redirect(303, "/login");
+    }
+  }
 
   return resolve(event);
 };

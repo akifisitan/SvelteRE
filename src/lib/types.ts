@@ -35,4 +35,5 @@ export interface DetailedProperty {
   type: string;
   status: string;
   currency: string;
+  owner: string;
 }

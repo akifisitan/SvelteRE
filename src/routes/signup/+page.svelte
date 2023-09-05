@@ -15,7 +15,7 @@
   };
 </script>
 
-<section class="min-h-16 pt-2 flex items-center justify-center">
+<section class="min-h-16 pt-2 pb-8 flex items-center justify-center">
   <div class="container mx-auto w-full">
     {#if form?.error}
       <div

@@ -15,7 +15,7 @@ export const actions: Actions = {
       username: data.get("username") as string,
       password: data.get("password") as string,
     };
-    const response = await api.post(fetch, "api/Authenticate/login", undefined, body);
+    const response = await api.post(fetch, "api/Authenticate/login", null, body);
     if (response.status === 200) {
       const userInfo: UserInfo = {
         username: data.get("username") as string,
