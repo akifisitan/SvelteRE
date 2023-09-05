@@ -1,4 +1,4 @@
-import { error, fail, redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import type { Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import * as api from "$lib/api";
@@ -16,8 +16,7 @@ export const actions: Actions = {
       password: data.get("password") as string,
     };
     const response = await api.post(fetch, "api/Authenticate/login", undefined, body);
-
-    if (response.data) {
+    if (response.status === 200) {
       const userInfo: UserInfo = {
         username: data.get("username") as string,
         roles: response.data.roles,
@@ -32,8 +31,10 @@ export const actions: Actions = {
       });
 
       throw redirect(303, "/");
-    } else {
+    }
+    if (response.status === 401) {
       return fail(401, { error: "Invalid credentials" });
     }
+    return fail(500, { error: "An error occurred, please try again later" });
   },
 };

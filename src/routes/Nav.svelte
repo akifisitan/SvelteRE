@@ -13,17 +13,28 @@
   </div>
   <div class="navbar-end">
     {#if $page.data.user}
-      {#if $page.data.user.roles.includes("Admin")}
-        <a href="/admin" class="btn btn-ghost normal-case text-base"> Admin </a>
-      {/if}
-      <button class="btn btn-ghost normal-case text-base"
-        >Logged in as {$page.data.user.username}</button
-      >
-      <form class="logout" action="/logout" method="POST" use:enhance>
-        <button type="submit" class="btn btn-ghost normal-case text-base text-red-700">
-          Logout
-        </button>
-      </form>
+      <div class="dropdown dropdown-bottom dropdown-end dropdown-hover">
+        <button class="btn btn-ghost normal-case text-base">{$page.data.user.username}</button>
+        <ul
+          tabindex="-1"
+          class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+        >
+          {#if $page.data.user.roles.includes("Admin")}
+            <li><a href="/admin" class="normal-case text-base"> Admin Dashboard</a></li>
+          {/if}
+          <li><a href="/dashboard/properties" class="normal-case text-base"> My Properties</a></li>
+          <li>
+            <a href="/dashboard/properties/create" class="normal-case text-base"> New Property</a>
+          </li>
+          <li>
+            <form action="/logout" method="POST" use:enhance>
+              <button type="submit" class="text-center normal-case text-base text-red-700">
+                Logout
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
     {:else}
       <a href="/login" class="btn btn-ghost normal-case text-base"> Login </a>
     {/if}

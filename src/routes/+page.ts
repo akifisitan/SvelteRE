@@ -3,7 +3,7 @@ import type { PageLoad } from "./$types";
 import * as api from "$lib/api";
 import { error } from "@sveltejs/kit";
 
-const pageSize = 6;
+const pageSize = 12;
 
 export const load: PageLoad = async ({ fetch, url }) => {
   const [types, statuses, currencies] = await Promise.all([
@@ -15,8 +15,6 @@ export const load: PageLoad = async ({ fetch, url }) => {
   if (!types.data || !statuses.data || !currencies.data) {
     throw error(500, "Could not download dropdown items");
   }
-
-  console.log(url.searchParams);
 
   const queryParams = url.search.slice(1);
   const completeQueryParams = queryParams.length > 0 ? "&" + queryParams : "";

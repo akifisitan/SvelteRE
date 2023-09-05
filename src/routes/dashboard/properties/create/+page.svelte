@@ -51,7 +51,6 @@
         error = response.data.message;
         break;
       case 401:
-        console.log("unauthorized");
         goto("/logout", { replaceState: true });
         break;
       case 403:

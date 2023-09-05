@@ -15,7 +15,6 @@ export const load: PageLoad = async ({ fetch }) => {
     throw error(404, "Could not download dropdown items");
   }
   const a = { types: types.data, statuses: statuses.data, currencies: currencies.data };
-  console.log(a);
 
   return { types: types.data, statuses: statuses.data, currencies: currencies.data };
 };

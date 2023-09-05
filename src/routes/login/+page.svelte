@@ -17,13 +17,13 @@
     loading = true;
 
     return async ({ update }) => {
-      loading = false;
       await update();
+      loading = false;
     };
   };
 </script>
 
-<section class="h-screen flex items-center justify-center">
+<section class="min-h-16 pt-8 flex items-center justify-center">
   <div class="container mx-auto w-full">
     {#if accountCreated}
       <div
@@ -32,11 +32,11 @@
         <p>Account created successfully</p>
       </div>
     {/if}
-    {#if form?.error && !loading}
+    {#if form?.error}
       <div
         class="container flex items-center justify-center text-white mx-auto min-h-12 mb-4 bg-red-900 rounded-lg shadow border border-gray-400 md:mt-0 sm:max-w-md xl:p-0"
       >
-        <p>{form?.error}</p>
+        <p>{form.error}</p>
       </div>
     {/if}
     <div

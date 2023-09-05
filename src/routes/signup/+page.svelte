@@ -9,15 +9,15 @@
     loading = true;
 
     return async ({ update }) => {
-      loading = false;
       await update();
+      loading = false;
     };
   };
 </script>
 
-<section class="h-screen flex items-center justify-center">
+<section class="min-h-16 pt-2 flex items-center justify-center">
   <div class="container mx-auto w-full">
-    {#if form?.error && !loading}
+    {#if form?.error}
       <div
         class="container flex items-center justify-center text-white mx-auto min-h-12 mb-4 bg-red-900 rounded-lg shadow border border-gray-400 md:mt-0 sm:max-w-md xl:p-0"
       >
@@ -35,13 +35,16 @@
           <div>
             <label for="email" class="block mb-2 text-sm font-medium text-white"> Email</label>
             <input
-              type="email"
+              type="text"
               name="email"
               id="email"
               class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
               placeholder="Enter email"
               required
             />
+            {#if form?.emailError}
+              <p class="text-sm text-red-500">{form?.emailError}</p>
+            {/if}
           </div>
           <div>
             <label for="password" class="block mb-2 text-sm font-medium text-white">
@@ -55,6 +58,9 @@
               class="bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg block w-full p-2.5"
               required
             />
+            {#if form?.passwordError}
+              <p class="text-sm text-red-500">{form?.passwordError}</p>
+            {/if}
           </div>
           <div>
             <label for="username" class="block mb-2 text-sm font-medium text-white">
@@ -68,6 +74,9 @@
               placeholder="Enter username"
               required
             />
+            {#if form?.usernameError}
+              <p class="text-sm text-red-500">{form?.usernameError}</p>
+            {/if}
           </div>
           <button
             type="submit"
