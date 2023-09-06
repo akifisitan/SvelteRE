@@ -37,3 +37,8 @@ export interface DetailedProperty {
   currency: string;
   owner: string;
 }
+
+export interface Toast {
+  message: string;
+  type: "success" | "error" | "warning" | "info";
+}

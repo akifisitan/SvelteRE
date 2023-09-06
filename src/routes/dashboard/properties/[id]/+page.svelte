@@ -1,9 +1,29 @@
-<script>
+<script lang="ts">
+  import { goto } from "$app/navigation";
   import StaticMap from "$lib/components/StaticMap.svelte";
   import { formatDate } from "$lib/date";
+  import { setToast } from "$lib/toast";
+  import toast, { Toaster } from "svelte-french-toast";
+  import * as api from "$lib/api";
 
   export let data;
   const property = data?.property;
+  let deleting = false;
+  let modal: HTMLDialogElement;
+
+  async function handleDelete() {
+    deleting = true;
+    // const { status } = await api.del(fetch, `/Property?id=${property.id}`, data.user?.token);
+    const status: number = 204;
+    if (status === 204) {
+      setToast({ message: "Property deleted successfully", type: "success" });
+      goto("/dashboard/properties");
+    } else {
+      toast.error("An error occurred while deleting the property.");
+      modal.close();
+      deleting = false;
+    }
+  }
 </script>
 
 <div class="px-8">
@@ -23,7 +43,12 @@
         ><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" /><path d="m15 5 4 4" /></svg
       ></a
     >
-    <a href="./{property.id}/delete" class="btn btn-error"
+
+    <button
+      class="btn btn-error"
+      on:click={() => {
+        modal.showModal();
+      }}
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -38,8 +63,22 @@
         ><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path
           d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
         /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg
-      ></a
+      ></button
     >
+    <dialog bind:this={modal} class="modal text-left">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Are you sure you want to delete this property?</h3>
+        <p class="py-4">This action cannot be undone!</p>
+        <div class="modal-action">
+          <form method="dialog">
+            <button class="btn btn-error" disabled={deleting} on:click|preventDefault={handleDelete}
+              >{deleting ? "Deleting" : "Delete"}</button
+            >
+            <button class="btn btn-info" disabled={deleting}>Close</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
   </div>
   <div class="text-xl">
     <h2 class="text-2xl font-bold">Listing Date</h2>

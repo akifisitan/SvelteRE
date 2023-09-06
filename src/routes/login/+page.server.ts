@@ -30,7 +30,7 @@ export const actions: Actions = {
         secure: process.env.NODE_ENV === "production",
       });
 
-      throw redirect(303, "/");
+      throw redirect(303, "/?login=success");
     }
     if (response.status === 401) {
       return fail(401, { error: "Invalid credentials" });

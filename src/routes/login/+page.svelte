@@ -1,44 +1,37 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { enhance } from "$app/forms";
-  import type { SubmitFunction } from "./$types.js";
   import { onMount } from "svelte";
   import { invalidateAll } from "$app/navigation";
+  import { toast } from "svelte-french-toast";
+  import type { SubmitFunction } from "@sveltejs/kit";
 
   export let form;
-  let accountCreated = $page.url.searchParams?.get("accountCreated") !== null;
-  let loading = false;
+  let loggingIn = false;
+
+  $: if (form?.error) {
+    toast.error(form.error);
+  }
 
   onMount(() => {
     invalidateAll();
+    if ($page.url.searchParams?.get("accountCreated") === "true") {
+      toast.success("Account created successfully");
+    }
   });
 
   const login: SubmitFunction = (input) => {
-    loading = true;
+    loggingIn = true;
 
-    return async ({ update }) => {
+    return async ({ update, result }) => {
       await update();
-      loading = false;
+      if (result.type === "error" || result.type === "failure") loggingIn = false;
     };
   };
 </script>
 
 <section class="min-h-16 pt-8 flex items-center justify-center">
   <div class="container mx-auto w-full">
-    {#if accountCreated}
-      <div
-        class="container flex items-center justify-center text-white mx-auto min-h-12 mb-4 bg-green-800 rounded-lg shadow border border-gray-400 md:mt-0 sm:max-w-md xl:p-0"
-      >
-        <p>Account created successfully</p>
-      </div>
-    {/if}
-    {#if form?.error}
-      <div
-        class="container flex items-center justify-center text-white mx-auto min-h-12 mb-4 bg-red-900 rounded-lg shadow border border-gray-400 md:mt-0 sm:max-w-md xl:p-0"
-      >
-        <p>{form.error}</p>
-      </div>
-    {/if}
     <div
       class="container mx-auto w-full bg-gray-800 rounded-lg shadow border border-gray-400 md:mt-0 sm:max-w-md xl:p-0"
     >
@@ -73,10 +66,10 @@
           </div>
           <button
             type="submit"
-            disabled={loading}
+            disabled={loggingIn}
             class="bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 w-full disabled:cursor-not-allowed text-gray-100 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loggingIn ? "Logging in..." : "Login"}
           </button>
           <p class="text-sm font-light text-gray-400">
             Don’t have an account yet?{" "}

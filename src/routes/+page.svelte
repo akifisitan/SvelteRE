@@ -1,8 +1,17 @@
 <script>
   import Filters from "./Filters.svelte";
   import PropertyTable from "./PropertyTable.svelte";
+  import { page } from "$app/stores";
+  import toast from "svelte-french-toast";
+  import { onMount } from "svelte";
 
   export let data;
+
+  onMount(() => {
+    if ($page.url.searchParams?.get("login") === "success" && data.user) {
+      toast.success(`Logged in as ${data.user.username}`);
+    }
+  });
 </script>
 
 <div class="flex flex-row">

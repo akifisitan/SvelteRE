@@ -3,14 +3,14 @@
   import type { SubmitFunction } from "./$types.js";
 
   export let form;
-  let loading = false;
+  let signingUp = false;
 
   const register: SubmitFunction = (input) => {
-    loading = true;
+    signingUp = true;
 
-    return async ({ update }) => {
+    return async ({ update, result }) => {
       await update();
-      loading = false;
+      if (result.type === "error" || result.type === "failure") signingUp = false;
     };
   };
 </script>
@@ -80,10 +80,10 @@
           </div>
           <button
             type="submit"
-            disabled={loading}
+            disabled={signingUp}
             class="bg-blue-600 hover:bg-blue-700 w-full disabled:cursor-not-allowed text-gray-100 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            {loading ? "Signing up..." : "Sign Up"}
+            {signingUp ? "Signing up..." : "Sign Up"}
           </button>
           <p class="text-sm font-light text-gray-400">
             Already have an account?{" "}
