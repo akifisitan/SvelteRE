@@ -1,29 +1,43 @@
-<script>
+<script lang="ts">
   import InteractiveMap from "$lib/components/InteractiveMap.svelte";
   import { goto, invalidate, invalidateAll } from "$app/navigation";
   import * as api from "$lib/api";
+  import toast from "svelte-french-toast";
+  import type { PageData } from "./$types";
+  import type { EditPropertyBody } from "$lib/types";
+  import { setToast } from "$lib/toast";
 
-  export let data;
-
+  export let data: PageData;
   let loading = false;
-  let error;
-  let typeId;
-  let statusId;
-  let currencyId;
-  let images;
+  let typeId: number;
+  let statusId: number;
+  let currencyId: number;
+  let images: FileList | null;
+  let selectedImageId: number;
+  let deleteImageModal: HTMLDialogElement;
   let endDate = data.property.endDate;
   let price = data.property.price;
   let latitude = data.property.latitude;
   let longitude = data.property.longitude;
-  $: property = data.property;
 
-  $: {
-    console.log("Property:");
-    console.log(data.property);
-  }
+  $: pendingChanges =
+    typeId !== -1 ||
+    statusId !== -1 ||
+    currencyId !== -1 ||
+    endDate !== data.property.endDate ||
+    price !== data.property.price ||
+    latitude !== data.property.latitude ||
+    longitude !== data.property.longitude;
 
   async function editProperty() {
-    const body = { id: property.id, price, endDate };
+    loading = true;
+    const body: EditPropertyBody = { id: data.property.id };
+    if (price !== data.property.price) {
+      body.price = price;
+    }
+    if (endDate !== data.property.endDate) {
+      body.endDate = endDate;
+    }
     if (typeId !== -1) {
       body.typeId = typeId;
     }
@@ -33,72 +47,64 @@
     if (currencyId !== -1) {
       body.currencyId = currencyId;
     }
-    console.log(body);
-    const response = await api.put(fetch, "Property", data.user.token, body);
-    if (response.status === 204) {
-      invalidateAll();
-    } else {
-      error = "Error editing property";
+    if (latitude !== data.property.latitude) {
+      body.latitude = Number(latitude.toFixed(2));
     }
-  }
-
-  async function deleteImage(imageId) {
-    loading = true;
-    const response = await api.del(fetch, `PropertyImage?id=${imageId}`, data.user.token);
-    if (response.status === 204) {
-      console.log("Deleted image");
-      invalidateAll();
-    } else {
-      error = "Error deleting image";
+    if (longitude !== data.property.longitude) {
+      body.longitude = Number(longitude.toFixed(2));
     }
-    loading = false;
-  }
-
-  async function editPropertyLocation() {
-    loading = true;
-    if (latitude === property.latitude && longitude === property.longitude) {
-      console.log("No change in location");
+    const response = await api.put(fetch, "Property", data.user?.token, body);
+    if (response.status === 204) {
+      setToast({ message: "Property edited successfully", type: "success" });
+      goto(`/dashboard/properties/${data.property.id}`, { replaceState: true });
+    } else {
+      toast.error("An error occurred while editing the property.");
       loading = false;
-      return;
     }
-    const body = {
-      id: property.id,
-      latitude: latitude.toFixed(2),
-      longitude: longitude.toFixed(2),
-    };
-    console.log(body);
-    const response = await api.put(fetch, "Property", data.user.token, body);
+  }
+
+  async function deleteImage() {
+    loading = true;
+    const response = await api.del(fetch, `PropertyImage?id=${selectedImageId}`, data.user?.token);
     if (response.status === 204) {
-      console.log("Edited property location");
+      toast.success("Image deleted successfully");
       invalidateAll();
+    } else if (response.status === 400) {
+      toast.error("You cannot delete the last image of a property.");
     } else {
-      error = "Error editing property location";
+      toast.error("An error occurred while deleting the image.");
     }
+    deleteImageModal.close();
     loading = false;
   }
 
   async function addImages() {
     loading = true;
     if (!images || images.length === 0) {
-      error = "Please select images to upload";
-      console.log("Please select images to upload");
+      toast.error("Please select images to upload");
       loading = false;
       return;
     }
     const form = new FormData();
-    form.append("PropertyId", property.id);
+    form.append("PropertyId", String(data.property.id));
     for (const image of images) {
       form.append("Images", image);
     }
     console.log(form);
-    const response = await api.post(fetch, "PropertyImage", data.user.token, null, form);
+    const response = await api.post(fetch, "PropertyImage", data.user?.token, null, form);
     if (response.status === 200) {
       images = null;
+      toast.success("Images added successfully");
       invalidateAll();
     } else {
-      error = "Error adding images";
+      toast.error("An error occurred while adding the images.");
     }
     loading = false;
+  }
+
+  function setImages(event: Event) {
+    const target = event.target as HTMLInputElement;
+    images = target.files;
   }
 </script>
 
@@ -119,7 +125,7 @@
             class="select select-bordered select-sm w-full max-w-xs"
             bind:value={typeId}
           >
-            <option selected disabled value={-1}>Previous: {property.type}</option>
+            <option selected disabled value={-1}>Previous: {data.property.type}</option>
             {#each data.types as type}
               <option value={type.id}>
                 {type.value}
@@ -135,7 +141,7 @@
             class="select select-bordered select-sm w-full max-w-xs"
             bind:value={statusId}
           >
-            <option selected disabled value={-1}>Previous: {property.status}</option>
+            <option selected disabled value={-1}>Previous: {data.property.status}</option>
             {#each data.statuses as status}
               <option value={status.id}>
                 {status.value}
@@ -151,7 +157,7 @@
             class="select select-bordered select-sm w-full max-w-xs"
             bind:value={currencyId}
           >
-            <option selected disabled value={-1}>Previous: {property.currency}</option>
+            <option selected disabled value={-1}>Previous: {data.property.currency}</option>
             {#each data.currencies as currency}
               <option value={currency.id}>
                 {currency.value}
@@ -180,14 +186,9 @@
             class="input input-bordered input-sm"
           />
         </div>
-        <button type="submit" disabled={loading} class="btn btn-accent p-2 mt-2">
+        <button type="submit" disabled={!pendingChanges || loading} class="btn btn-accent p-2 mt-2">
           {loading ? "Saving changes..." : "Save Changes"}
         </button>
-        {#if error}
-          <div>
-            <p class="text-xs text-red-500">{error}</p>
-          </div>
-        {/if}
       </form>
     </div>
     <div class="basis-1/2">
@@ -195,23 +196,65 @@
         <div>
           <h1>Property Location</h1>
           <InteractiveMap bind:latitude bind:longitude />
-          <button on:click={editPropertyLocation} disabled={loading} class="btn btn-accent"
-            >{loading ? "Loading..." : "Edit Location"}</button
-          >
         </div>
       </div>
     </div>
   </div>
   <div>
-    <div>
-      {#each data.property.images as image}
-        <div>
-          <img src={image.value} alt="{property.type} {property.status}" />
-          <button on:click={() => deleteImage(image.id)} class="btn btn-error">Delete</button>
+    <div class="flex flex-col">
+      <div class="flex mx-auto py-4"><p class="text-lg">Image Gallery</p></div>
+      <div class="flex mx-auto content-center justify-center">
+        <div class="carousel w-1/2 border-8 rounded-md border-gray-800">
+          {#each data.property.images as image, index (image.id)}
+            <div id="slide{index}" class="carousel-item relative w-full">
+              <img
+                src={image.value}
+                alt="{data.property.type}{data.property.status}"
+                class="w-full aspect-video"
+              />
+              <button
+                on:click={() => {
+                  selectedImageId = image.id;
+                  deleteImageModal.showModal();
+                }}
+                class="btn btn-square btn-error btn-sm absolute top-2 right-2"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-5 w-5 lucide lucide-trash-2"
+                  ><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path
+                    d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+                  /><line x1="10" x2="10" y1="11" y2="17" /><line
+                    x1="14"
+                    x2="14"
+                    y1="11"
+                    y2="17"
+                  /></svg
+                ></button
+              >
+
+              <div
+                class="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2"
+              >
+                <a
+                  href="#slide{index - 1}"
+                  class="btn btn-circle {index === 0 ? 'invisible' : null}">❮</a
+                >
+                {#if index !== data.property.images.length - 1}
+                  <a href="#slide{index + 1}" class="btn btn-circle">❯</a>
+                {/if}
+              </div>
+            </div>
+          {/each}
         </div>
-      {/each}
+      </div>
     </div>
-    <div>
+    <div class="pl-4">
       <form method="POST" on:submit|preventDefault={addImages}>
         <label for="images" class="label">Add new images</label>
         <input
@@ -222,30 +265,41 @@
           multiple={true}
           accept=".jpg, .jpeg, .png"
           class="file-input file-input-bordered file-input-sm w-full max-w-xs"
-          on:change={(e) => {
-            images = e.target.files;
-          }}
+          on:change={setImages}
         />
-        <button type="submit" disabled={loading} class="btn btn-accent p-2 mt-2">
+        <button type="submit" disabled={loading} class="btn btn-accent btn-sm p-2 mt-2">
           {loading ? "Adding images..." : "Add images"}
         </button>
       </form>
-      <div>
-        <h1 class="pb-2">Image Preview</h1>
-        <div class="flex">
-          {#if images && images.length > 0}
-            <div class="carousel carousel-center rounded-box mx-auto">
-              {#each images as image}
-                <div class="carousel-item">
-                  <img class="block w-96 h-72" src={URL.createObjectURL(image)} alt={image.name} />
-                </div>
-              {/each}
-            </div>
-          {:else}
-            <div class="mx-auto my-24">No images selected</div>
-          {/if}
-        </div>
+      <div class="flex flex-col pb-8">
+        <h2 class="pb-4 mx-auto text-lg">Image Preview</h2>
+        {#if images && images.length > 0}
+          <div class="carousel carousel-center rounded-box mx-auto">
+            {#each images as image}
+              <div class="carousel-item">
+                <img class="block w-96 h-72" src={URL.createObjectURL(image)} alt={image.name} />
+              </div>
+            {/each}
+          </div>
+        {:else}
+          <div class="mx-auto my-24">No images selected</div>
+        {/if}
       </div>
     </div>
   </div>
 </section>
+
+<dialog bind:this={deleteImageModal} class="modal text-left">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Are you sure you want to delete this image?</h3>
+    <p class="py-4">This action cannot be undone!</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-error" disabled={loading} on:click|preventDefault={deleteImage}
+          >{loading ? "loading" : "Delete"}</button
+        >
+        <button class="btn btn-neutral" disabled={loading}>Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>

@@ -42,3 +42,14 @@ export interface Toast {
   message: string;
   type: "success" | "error" | "warning" | "info";
 }
+
+export interface EditPropertyBody {
+  id: number;
+  price?: number;
+  endDate?: string;
+  typeId?: number;
+  statusId?: number;
+  currencyId?: number;
+  latitude?: number;
+  longitude?: number;
+}
