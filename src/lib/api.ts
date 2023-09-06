@@ -1,7 +1,8 @@
 import { error } from "@sveltejs/kit";
+import { dev } from "$app/environment";
+import type { SendOptions } from "./types";
 
-const localDev = false;
-const base = localDev ? "http://127.0.0.1:5000" : "https://realestateapp-api.hop.sh";
+const base = dev ? "http://127.0.0.1:5000" : "https://realestateapp-api.hop.sh";
 
 async function send(
   fetch: typeof globalThis.fetch,
@@ -11,7 +12,7 @@ async function send(
   data?: object | null,
   form?: FormData | null
 ) {
-  const options = { method, headers: {} };
+  const options: SendOptions = { method, headers: {} };
 
   if (data) {
     options.headers["Content-Type"] = "application/json";

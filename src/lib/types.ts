@@ -1,3 +1,9 @@
+export interface SendOptions {
+  method: string;
+  headers: Record<string, string>;
+  body?: string | FormData;
+}
+
 export interface UserInfo {
   username: string | null;
   token: string | null;

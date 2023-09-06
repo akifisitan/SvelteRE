@@ -76,7 +76,7 @@
     >
     <dialog bind:this={modal} class="modal text-left">
       <div class="modal-box">
-        <h3 class="font-bold text-lg">Are you sure you want to delete this data.property?</h3>
+        <h3 class="font-bold text-lg">Are you sure you want to delete this property?</h3>
         <p class="py-4">This action cannot be undone!</p>
         <div class="modal-action">
           <form method="dialog">
