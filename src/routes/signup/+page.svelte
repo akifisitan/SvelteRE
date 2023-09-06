@@ -1,9 +1,14 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import type { SubmitFunction } from "./$types.js";
+  import toast from "svelte-french-toast";
+  import type { ActionData, SubmitFunction } from "./$types.js";
 
-  export let form;
+  export let form: ActionData;
   let signingUp = false;
+
+  $: if (form?.error) {
+    toast.error(form.error);
+  }
 
   const register: SubmitFunction = (input) => {
     signingUp = true;
@@ -17,13 +22,6 @@
 
 <section class="min-h-16 pt-2 pb-8 flex items-center justify-center">
   <div class="container mx-auto w-full">
-    {#if form?.error}
-      <div
-        class="container flex items-center justify-center text-white mx-auto min-h-12 mb-4 bg-red-900 rounded-lg shadow border border-gray-400 md:mt-0 sm:max-w-md xl:p-0"
-      >
-        <p>{form?.error}</p>
-      </div>
-    {/if}
     <div
       class="container mx-auto w-full bg-gray-800 rounded-lg shadow border border-gray-400 md:mt-0 sm:max-w-md xl:p-0"
     >

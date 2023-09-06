@@ -5,8 +5,9 @@
   import { invalidateAll } from "$app/navigation";
   import { toast } from "svelte-french-toast";
   import type { SubmitFunction } from "@sveltejs/kit";
+  import type { ActionData } from "./$types";
 
-  export let form;
+  export let form: ActionData;
   let loggingIn = false;
 
   $: if (form?.error) {
