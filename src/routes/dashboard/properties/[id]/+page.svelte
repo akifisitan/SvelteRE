@@ -13,8 +13,7 @@
 
   async function handleDelete() {
     deleting = true;
-    // const { status } = await api.del(fetch, `/Property?id=${property.id}`, data.user?.token);
-    const status: number = 204;
+    const { status } = await api.del(fetch, `Property?id=${property.id}`, data.user?.token);
     if (status === 204) {
       setToast({ message: "Property deleted successfully", type: "success" });
       goto("/dashboard/properties");

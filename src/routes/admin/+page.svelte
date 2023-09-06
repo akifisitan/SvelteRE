@@ -1,1 +1,3 @@
-<h1>Admin Page</h1>
+<div>
+  <p>Select an entity from the menu</p>
+</div>
