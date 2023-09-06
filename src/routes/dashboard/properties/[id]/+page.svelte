@@ -118,8 +118,8 @@
         <div id="slide{index}" class="carousel-item relative w-full">
           <img
             src={image.value}
-            alt="{data.property.type}{data.property.status}"
-            class="w-full aspect-video"
+            alt="{data.property.type} {data.property.status}"
+            class="w-full aspect-auto"
           />
           <div
             class="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2"

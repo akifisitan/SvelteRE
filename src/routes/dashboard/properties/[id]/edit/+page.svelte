@@ -19,6 +19,8 @@
   let price = data.property.price;
   let latitude = data.property.latitude;
   let longitude = data.property.longitude;
+  let editImageModal: HTMLDialogElement;
+  let selectedImage: File | null = null;
 
   $: pendingChanges =
     typeId !== -1 ||
@@ -70,7 +72,7 @@
       toast.success("Image deleted successfully");
       invalidateAll();
     } else if (response.status === 400) {
-      toast.error("You cannot delete the last image of a property.");
+      toast.error("You cannot delete the only image of a property.");
     } else {
       toast.error("An error occurred while deleting the image.");
     }
@@ -90,7 +92,6 @@
     for (const image of images) {
       form.append("Images", image);
     }
-    console.log(form);
     const response = await api.post(fetch, "PropertyImage", data.user?.token, null, form);
     if (response.status === 200) {
       images = null;
@@ -102,9 +103,37 @@
     loading = false;
   }
 
+  async function editImage() {
+    loading = true;
+    if (selectedImage === null) {
+      toast.error("Please select an image to upload");
+      loading = false;
+      editImageModal.close();
+      return;
+    }
+    const form = new FormData();
+    form.append("Id", String(selectedImageId));
+    form.append("Image", selectedImage);
+    const response = await api.put(fetch, "PropertyImage", data.user?.token, null, form);
+    if (response.status === 204) {
+      selectedImage = null;
+      toast.success("Image edited successfully");
+      invalidateAll();
+    } else {
+      toast.error("An error occurred while editing the image.");
+    }
+    loading = false;
+    editImageModal.close();
+  }
+
   function setImages(event: Event) {
     const target = event.target as HTMLInputElement;
     images = target.files;
+  }
+
+  function setImage(event: Event) {
+    const target = event.target as HTMLInputElement;
+    selectedImage = target.files ? target.files[0] : null;
   }
 </script>
 
@@ -209,15 +238,35 @@
             <div id="slide{index}" class="carousel-item relative w-full">
               <img
                 src={image.value}
-                alt="{data.property.type}{data.property.status}"
-                class="w-full aspect-video"
+                alt="{data.property.type} {data.property.status}"
+                class="w-full aspect-auto"
               />
+              <button
+                on:click={() => {
+                  selectedImageId = image.id;
+                  editImageModal.showModal();
+                }}
+                class="btn btn-square btn-info btn-sm absolute top-2 right-10"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-5 w-5 lucide lucide-pencil"
+                  ><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" /><path
+                    d="m15 5 4 4"
+                  /></svg
+                ></button
+              >
               <button
                 on:click={() => {
                   selectedImageId = image.id;
                   deleteImageModal.showModal();
                 }}
-                class="btn btn-square btn-error btn-sm absolute top-2 right-2"
+                class="btn btn-square btn-error btn-sm absolute top-2 right-1"
                 ><svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -296,6 +345,33 @@
       <form method="dialog">
         <button class="btn btn-error" disabled={loading} on:click|preventDefault={deleteImage}
           >{loading ? "loading" : "Delete"}</button
+        >
+        <button class="btn btn-neutral" disabled={loading}>Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<dialog bind:this={editImageModal} class="modal text-left">
+  <div class="modal-box">
+    <h3 class="pb-2 font-bold text-lg">Edit Image</h3>
+    {#if selectedImage}
+      <img
+        class="pb-2 w-48 h-36 justify-center"
+        src={URL.createObjectURL(selectedImage)}
+        alt={selectedImage.name}
+      />
+    {/if}
+    <input
+      type="file"
+      accept=".jpg, .jpeg, .png"
+      class="file-input file-input-bordered file-input-sm w-full max-w-xs"
+      on:change={setImage}
+    />
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-info" disabled={loading} on:click|preventDefault={editImage}
+          >{loading ? "Editing..." : "Confirm"}</button
         >
         <button class="btn btn-neutral" disabled={loading}>Close</button>
       </form>
