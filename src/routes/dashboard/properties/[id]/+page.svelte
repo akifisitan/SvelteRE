@@ -22,16 +22,13 @@
 
   async function handleDelete() {
     deleting = true;
-    const { status } = await api.del(
-      fetch,
-      `data.property?id=${data.property.id}`,
-      data.user?.token
-    );
+    const { status } = await api.del(fetch, `Property?id=${data.property.id}`, data.user?.token);
     if (status === 204) {
-      setToast({ message: "data.property deleted successfully", type: "success" });
+      setToast({ message: "Property deleted successfully", type: "success" });
       goto("/dashboard/properties");
     } else {
-      toast.error("An error occurred while deleting the data.property.");
+      console.log("An error occurred while deleting the property. ", status);
+      toast.error("An error occurred while deleting the property.");
       modal.close();
       deleting = false;
     }

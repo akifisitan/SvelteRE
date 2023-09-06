@@ -25,6 +25,10 @@ export const load: PageLoad = async ({ fetch, url }) => {
     null
   );
 
+  if (!data) {
+    throw error(500, "Could not download properties");
+  }
+
   return {
     propertyList: (data.items as Array<ShowcaseProperty>) ?? [],
     types: types.data,

@@ -3,8 +3,9 @@
   import { onMount } from "svelte";
   import { getToast } from "$lib/toast";
   import toast from "svelte-french-toast";
+  import type { PageData } from "./$types";
 
-  export let data;
+  export let data: PageData;
 
   onMount(() => {
     const toastData = getToast();
