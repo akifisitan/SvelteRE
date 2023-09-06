@@ -260,7 +260,6 @@
         <input
           type="file"
           name="Images"
-          required
           id="images"
           multiple={true}
           accept=".jpg, .jpeg, .png"

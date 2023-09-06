@@ -1,67 +1,69 @@
-<script>
+<script lang="ts">
   import { centerLat, centerLong } from "$lib/constants";
   import InteractiveMap from "$lib/components/InteractiveMap.svelte";
   import * as api from "$lib/api";
   import { goto } from "$app/navigation";
+  import toast from "svelte-french-toast";
+  import type { PageData } from "./$types";
+  import { setToast } from "$lib/toast";
 
-  export let data;
-
+  export let data: PageData;
   let loading = false;
-  let error;
-  let price;
-  let typeId;
-  let statusId;
-  let currencyId;
-  let endDate;
-  let images;
+  let price: number;
+  let typeId: number;
+  let statusId: number;
+  let currencyId: number;
+  let endDate: string;
+  let images: FileList | null = null;
   let latitude = centerLat;
   let longitude = centerLong;
 
   function allFilled() {
-    if (price && typeId && statusId && currencyId && endDate && images) return true;
+    if (price && typeId && statusId && currencyId && endDate) return true;
     return false;
+  }
+
+  function setImages(event: Event) {
+    const target = event.target as HTMLInputElement;
+    images = target.files;
   }
 
   async function createProperty() {
     if (loading) return;
     loading = true;
-    error = null;
     if (!allFilled()) {
-      error = "Please fill all fields";
+      toast.error("Please fill all fields");
+      loading = false;
+      return;
+    }
+    if (images === null) {
+      toast.error("Please select at least one image");
       loading = false;
       return;
     }
     const form = new FormData();
     form.append("EndDate", endDate);
-    form.append("PropertyTypeId", typeId);
-    form.append("PropertyStatusId", statusId);
-    form.append("CurrencyId", currencyId);
-    form.append("Price", price);
+    form.append("PropertyTypeId", String(typeId));
+    form.append("PropertyStatusId", String(statusId));
+    form.append("CurrencyId", String(currencyId));
+    form.append("Price", String(price));
     form.append("Latitude", latitude.toFixed(2));
     form.append("Longitude", longitude.toFixed(2));
     for (const image of images) {
       form.append("Images", image);
     }
-    const response = await api.post(fetch, "Property", data.user.token, null, form);
-    switch (response.status) {
-      case 200:
-        goto("/dashboard?createdNew=true", { replaceState: true });
-        break;
-      case 400:
-        error = response.data.message;
-        break;
-      case 401:
-        goto("/logout", { replaceState: true });
-        break;
-      case 403:
-        goto("/logout", { replaceState: true });
-        break;
-      default:
-        console.log("Something went wrong, status code: ", response.status);
-        error = "Something went wrong, please try again later.";
-        break;
+    const response = await api.post(fetch, "Property", data.user?.token, null, form);
+    if (response.status === 200) {
+      setToast({ message: "Property created successfully", type: "success" });
+      goto("/dashboard", { replaceState: true });
+    } else if (response.status === 400) {
+      toast.error(response.data.message);
+      loading = false;
+    } else {
+      toast.error("Something went wrong, please try again later.");
+      console.log("Something went wrong, status code: ", response.status);
+      loading = false;
     }
-    loading = false;
   }
 </script>
 
@@ -127,9 +129,7 @@
           type="number"
           id="price"
           name="Price"
-          required
           bind:value={price}
-          title="This field is required"
           class="input input-bordered input-sm"
           placeholder="Enter price"
         />
@@ -151,12 +151,9 @@
           name="Images"
           id="images"
           multiple={true}
-          required
           accept=".jpg, .jpeg, .png"
           class="file-input file-input-bordered file-input-sm w-full max-w-xs"
-          on:change={(e) => {
-            images = e.target.files;
-          }}
+          on:change={setImages}
         />
       </div>
       <button
@@ -166,21 +163,16 @@
       >
         {loading ? "Creating property..." : "Create Property"}
       </button>
-      {#if error}
-        <div>
-          <p class="text-xs text-red-500">{error}</p>
-        </div>
-      {/if}
     </form>
   </div>
   <div class="basis-1/2">
     <div class="mx-auto mr-4">
       <div>
-        <h1>Select Property Location</h1>
+        <h1 class="text-lg pb-2">Property Location</h1>
         <InteractiveMap bind:latitude bind:longitude />
       </div>
       <div>
-        <h1 class="pb-2">Image Preview</h1>
+        <h1 class="text-lg py-2">Image Preview</h1>
         <div class="flex">
           {#if images && images.length > 0}
             <div class="carousel carousel-center rounded-box mx-auto">
