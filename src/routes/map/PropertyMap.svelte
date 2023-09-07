@@ -1,18 +1,19 @@
 <script lang="ts">
   import "leaflet/dist/leaflet.css";
   import { LeafletMap, Marker, TileLayer, Popup } from "svelte-leafletjs";
-  import { centerLocation } from "$lib/constants";
+  import { centerLat, centerLong } from "$lib/constants";
   import type { MarkerData } from "$lib/types";
+  import type { MapOptions, TileLayerOptions } from "leaflet";
 
   export let markerData: MarkerData[];
 
   const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-  const tileLayerOptions = {
+  const tileLayerOptions: TileLayerOptions = {
     minZoom: 5,
     maxZoom: 7,
   };
-  const mapOptions = {
-    center: centerLocation,
+  const mapOptions: MapOptions = {
+    center: [centerLat, centerLong],
     zoom: 5,
     zoomControl: false,
     attributionControl: false,

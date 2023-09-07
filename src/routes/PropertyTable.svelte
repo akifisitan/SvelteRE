@@ -1,5 +1,7 @@
-<script>
-  export let properties;
+<script lang="ts">
+  import type { ShowcaseProperty } from "$lib/types";
+
+  export let properties: ShowcaseProperty[];
 </script>
 
 <div class="property-table">

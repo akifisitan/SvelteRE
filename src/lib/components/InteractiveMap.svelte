@@ -1,14 +1,15 @@
-<script>
+<script lang="ts">
   import "leaflet/dist/leaflet.css";
   import { LeafletMap, Marker, TileLayer } from "svelte-leafletjs";
   import { isWithinTurkeyBounds } from "$lib/constants";
+  import type { MapOptions, TileLayerOptions } from "leaflet";
 
-  export let latitude;
-  export let longitude;
-  let leafletMap;
-  let marker;
+  export let latitude: number;
+  export let longitude: number;
+  let leafletMap: LeafletMap;
+  let marker: Marker;
 
-  const mapOptions = {
+  const mapOptions: MapOptions = {
     center: [latitude, longitude],
     zoom: 5,
     zoomControl: false,
@@ -16,7 +17,7 @@
   };
 
   const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-  const tileLayerOptions = {
+  const tileLayerOptions: TileLayerOptions = {
     minZoom: 5,
     maxZoom: 7,
   };

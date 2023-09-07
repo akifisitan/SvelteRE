@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
   import StaticMap from "$lib/components/StaticMap.svelte";
   import { formatDate } from "$lib/date";
+  import type { PageData } from "./$types";
 
-  export let data;
+  export let data: PageData;
   const property = data?.property;
 </script>
 

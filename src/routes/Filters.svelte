@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
   import { goto } from "$app/navigation";
+  import type { PageData } from "./$types";
 
-  export let data;
-
+  export let data: PageData;
   let queryString = "";
   let minPrice = 0;
   let maxPrice = 9999999;
@@ -150,9 +150,9 @@
         <a class="join-item btn w-1/6" href="/?page={currentPage + 1}{queryString}"> » </a>
       {/if}
     {:else}
-      <button class="join-item btn w-1/6"> « </button>
+      <button disabled class="join-item btn w-1/6"> « </button>
       <button class="join-item btn w-2/5"> Page 1 / 1 </button>
-      <button class="join-item btn w-1/6"> » </button>
+      <button disabled class="join-item btn w-1/6"> » </button>
     {/if}
   </div>
 </div>

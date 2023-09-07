@@ -1,8 +1,5 @@
 export const centerLat = 38.925;
 export const centerLong = 35.41;
-
-export const centerLocation = [38.925, 35.41];
-
 export const minLat = 35.81;
 export const maxLat = 42.11;
 export const minLon = 25.66;

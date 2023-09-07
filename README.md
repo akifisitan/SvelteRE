@@ -1,38 +1,27 @@
-# create-svelte
+# Svelte-RE
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## Intro
 
-## Creating a project
+Complete version of the Real Estate listing website built as a single page application using [SvelteKit](https://kit.svelte.dev/)
 
-If you're seeing this, you've probably already done this step. Congrats!
+- This project was built as an internship project in a week, helping grasp current frontend technologies used to consume Restful Web APIs like [one built for this project](https://github.com/akifisitan/RealEstateApp.Api/) specifically
+- This project paved the way to the development of [SvelteRE](https://github.com/akifisitan/SvelteRE/), the same app built using SvelteKit
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Demo
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+- Demo video coming soon
 
-## Developing
+## Used technologies
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- [Vite](https://vitejs.dev/) React Template
+- [TailwindCSS](https://tailwindcss.com/)
+- [DaisyUI](https://daisyui.com/)
 
-```bash
-npm run dev
+## Usage
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- Make sure you have the [Backend API](https://github.com/akifisitan/RealEstateApp.Api/) running
+- Make sure you have [NodeJS](https://nodejs.org/en) v18 or higher installed
+- Clone the repo, open a terminal and navigate to the repo root directory
+- Run `npm install` to install packages
+- Run `npm run dev` to start the development server
+- Navigate to http://localhost:5173/
