@@ -2,7 +2,7 @@
   export let properties;
 </script>
 
-<div class="grid grid-cols-6 gap-x-2 gap-y-2 pr-4 pt-8">
+<div class="property-table">
   {#if properties}
     {#each properties as property}
       <div>
@@ -20,3 +20,11 @@
     {/each}
   {/if}
 </div>
+
+<style>
+  .property-table {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  }
+</style>

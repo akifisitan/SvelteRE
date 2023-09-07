@@ -92,3 +92,11 @@
     </div>
   </div>
 </section>
+
+<style>
+  @media (max-width: 768px) {
+    section {
+      padding: 3rem;
+    }
+  }
+</style>

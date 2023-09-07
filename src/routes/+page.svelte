@@ -15,10 +15,10 @@
 </script>
 
 <div class="flex flex-row">
-  <div class="basis-1/5">
+  <div class="filter-menu">
     <Filters {data} />
   </div>
-  <div class="basis-4/5">
+  <div class="table-container">
     {#if data.maxPage > 0}
       <PropertyTable properties={data.propertyList} />
     {:else}
@@ -26,3 +26,15 @@
     {/if}
   </div>
 </div>
+
+<style>
+  .filter-menu {
+    width: 13rem;
+    min-width: 13rem;
+  }
+
+  .table-container {
+    padding: 1rem;
+    width: 100%;
+  }
+</style>

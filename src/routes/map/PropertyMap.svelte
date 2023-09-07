@@ -42,12 +42,18 @@
 
 <style>
   .map-container {
-    height: 80vh;
-    width: 60vw;
+    height: 89vh;
+    width: 100vw;
   }
   .map {
     height: 100%;
     width: 100%;
     position: relative;
+  }
+  @media (max-width: 768px) {
+    .map-container {
+      height: 40vh;
+      width: 100vw;
+    }
   }
 </style>

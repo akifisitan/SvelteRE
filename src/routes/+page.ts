@@ -3,7 +3,7 @@ import type { PageLoad } from "./$types";
 import * as api from "$lib/api";
 import { error } from "@sveltejs/kit";
 
-const pageSize = 12;
+const pageSize = 18;
 
 export const load: PageLoad = async ({ fetch, url }) => {
   const [types, statuses, currencies] = await Promise.all([

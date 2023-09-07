@@ -133,24 +133,22 @@
     </li>
   </ul>
 </div>
-<div class="flex flex-row mt-2">
-  <div class="join w-full justify-center items-center">
+<div class="flex flex-row pt-2 w-full">
+  <div class="join w-fit mx-auto justify-center">
     {#if maxPage > 0}
-      <a
-        class="join-item btn w-1/6"
-        href={currentPage === 1 ? null : `/?page=${currentPage - 1}${queryString}`}
-      >
-        «
-      </a>
+      {#if currentPage === 1}
+        <button disabled class="join-item btn w-1/6"> « </button>
+      {:else}
+        <a class="join-item btn w-1/6" href="/?page={currentPage - 1}{queryString}"> « </a>
+      {/if}
       <button class="join-item btn w-2/5">
         Page {currentPage} / {maxPage}
       </button>
-      <a
-        class="join-item btn w-1/6"
-        href={currentPage === maxPage ? null : `/?page=${currentPage + 1}${queryString}`}
-      >
-        »
-      </a>
+      {#if currentPage === maxPage}
+        <button disabled class="join-item btn w-1/6"> » </button>
+      {:else}
+        <a class="join-item btn w-1/6" href="/?page={currentPage + 1}{queryString}"> » </a>
+      {/if}
     {:else}
       <button class="join-item btn w-1/6"> « </button>
       <button class="join-item btn w-2/5"> Page 1 / 1 </button>
