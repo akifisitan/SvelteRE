@@ -1,4 +1,4 @@
-<script>
+<script type="ts">
   import "leaflet/dist/leaflet.css";
   import * as api from "$lib/api";
   import PropertyMap from "./PropertyMap.svelte";

@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
   import "leaflet/dist/leaflet.css";
   import { LeafletMap, Marker, TileLayer, Popup } from "svelte-leafletjs";
   import { centerLocation } from "$lib/constants";
+  import type { MarkerData } from "$lib/types";
 
-  export let markerData;
+  export let markerData: MarkerData[];
 
   const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   const tileLayerOptions = {
@@ -18,7 +19,7 @@
   };
 </script>
 
-<div class="map-container mx-auto">
+<div class="map-container">
   <div class="map m-auto">
     <LeafletMap options={mapOptions}>
       <TileLayer url={tileUrl} options={tileLayerOptions} />
@@ -52,7 +53,8 @@
   }
   @media (max-width: 768px) {
     .map-container {
-      height: 40vh;
+      padding-top: 3em;
+      height: 45vh;
       width: 100vw;
     }
   }

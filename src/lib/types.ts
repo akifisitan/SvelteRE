@@ -59,3 +59,13 @@ export interface EditPropertyBody {
   latitude?: number;
   longitude?: number;
 }
+
+export interface MarkerData {
+  id: number;
+  latitude: number;
+  longitude: number;
+  price: number;
+  type: string;
+  status: string;
+  currency: string;
+}
