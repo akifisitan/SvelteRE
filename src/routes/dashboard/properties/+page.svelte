@@ -1,9 +1,9 @@
 <script lang="ts">
-  import UserPropertyTable from "./UserPropertyTable.svelte";
   import { onMount } from "svelte";
   import { getToast } from "$lib/toast";
   import toast from "svelte-french-toast";
   import type { PageData } from "./$types";
+  import PropertyTable from "$lib/components/PropertyTable.svelte";
 
   export let data: PageData;
 
@@ -19,6 +19,6 @@
     <a href="/dashboard/properties/create" class="btn btn-accent btn-sm"> Create New </a>
   </div>
   <div class="px-2">
-    <UserPropertyTable properties={data.propertyList} />
+    <PropertyTable properties={data.propertyList} path="/dashboard/properties/" />
   </div>
 </div>

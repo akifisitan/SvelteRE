@@ -1,6 +1,6 @@
 <script lang="ts">
   import Filters from "./Filters.svelte";
-  import PropertyTable from "./PropertyTable.svelte";
+  import PropertyTable from "$lib/components/PropertyTable.svelte";
   import type { PageData } from "./$types";
   import { page } from "$app/stores";
   import toast from "svelte-french-toast";
@@ -21,7 +21,7 @@
   </div>
   <div class="table-container">
     {#if data.maxPage > 0}
-      <PropertyTable properties={data.propertyList} />
+      <PropertyTable properties={data.propertyList} path="/property/" />
     {:else}
       <div class="w-fit">
         <svg

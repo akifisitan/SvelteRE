@@ -2,13 +2,14 @@
   import type { ShowcaseProperty } from "$lib/types";
 
   export let properties: ShowcaseProperty[];
+  export let path: string;
 </script>
 
 <div class="property-table">
   {#if properties}
     {#each properties as property}
       <div>
-        <a href="/property/{property.id}">
+        <a href="{path}{property.id}">
           <img class="m-auto w-32 h-24" src={property.thumbnail} alt="Property View" />
         </a>
         <p class="text-center">
