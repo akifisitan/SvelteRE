@@ -328,7 +328,7 @@
     <div class="modal-action">
       <form method="dialog">
         <button class="btn btn-error" disabled={loading} on:click|preventDefault={deleteImage}
-          >{loading ? "loading" : "Delete"}</button
+          >{loading ? "Deleting..." : "Delete"}</button
         >
         <button class="btn btn-neutral" disabled={loading}>Close</button>
       </form>
@@ -364,4 +364,9 @@
 </dialog>
 
 <PickLocationModal bind:modal={editLocationModal} bind:latitude bind:longitude />
-<SelectImageModal bind:modal={selectImageModal} bind:images confirmFunction={addImages} />
+<SelectImageModal
+  bind:modal={selectImageModal}
+  bind:images
+  confirmFunction={addImages}
+  bind:loading
+/>

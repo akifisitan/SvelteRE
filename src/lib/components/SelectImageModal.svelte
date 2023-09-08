@@ -3,6 +3,7 @@
   import type { MouseEventHandler } from "svelte/elements";
   export let modal: HTMLDialogElement;
   export let images: FileList | null;
+  export let loading: boolean;
   export let confirmFunction: MouseEventHandler<HTMLButtonElement> | null = null;
 
   function setImages(event: Event) {
@@ -39,8 +40,13 @@
         {#if confirmFunction === null}
           <button class="btn btn-success">Confirm</button>
         {:else}
-          <button on:click|preventDefault={confirmFunction} class="btn btn-success">Add</button>
-          <button class="btn btn-neutral">Cancel</button>
+          <button
+            on:click|preventDefault={confirmFunction}
+            disabled={loading}
+            class="btn btn-success"
+            >{loading ? "Adding..." : "Add"}
+          </button>
+          <button class="btn btn-neutral" disabled={loading}>Cancel</button>
         {/if}
       </form>
     </div>
