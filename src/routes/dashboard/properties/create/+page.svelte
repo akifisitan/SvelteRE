@@ -1,12 +1,12 @@
 <script lang="ts">
   import { centerLat, centerLong } from "$lib/constants";
-  import InteractiveMap from "$lib/components/InteractiveMap.svelte";
   import * as api from "$lib/api";
   import { goto } from "$app/navigation";
   import toast from "svelte-french-toast";
   import type { PageData } from "./$types";
   import { setToast } from "$lib/toast";
-  import Carousel from "svelte-carousel";
+  import PickLocationModal from "$lib/components/PickLocationModal.svelte";
+  import SelectImageModal from "$lib/components/SelectImageModal.svelte";
 
   export let data: PageData;
   let loading = false;
@@ -26,11 +26,6 @@
     return false;
   }
 
-  function setImages(event: Event) {
-    const target = event.target as HTMLInputElement;
-    images = target.files;
-  }
-
   async function createProperty() {
     if (loading) return;
     loading = true;
@@ -39,8 +34,13 @@
       loading = false;
       return;
     }
+    if (latitude === centerLat && longitude === centerLong) {
+      toast.error("Please choose a location");
+      loading = false;
+      return;
+    }
     if (images === null) {
-      toast.error("Please select at least one image");
+      toast.error("Please choose at least one image");
       loading = false;
       return;
     }
@@ -149,23 +149,29 @@
       </div>
       <div>
         <label for="choose-location" class="label">Property Location</label>
-        <button on:click|preventDefault={() => locationModal.showModal()} class="btn btn-sm"
-          >Choose Location</button
+        <button
+          on:click|preventDefault={() => locationModal.showModal()}
+          class="btn btn-sm btn-info">Choose Location</button
         >
+        {#if latitude === centerLat && longitude === centerLong}
+          <p class="inline-flex text-error pl-2">Location not chosen</p>
+        {:else}
+          <p class="inline-flex text-success pl-2">Location chosen</p>
+        {/if}
       </div>
       <div>
         <label for="add-images" class="label">Property Images</label>
-        <button on:click|preventDefault={() => imageModal.showModal()} class="btn btn-sm"
-          >Add Images</button
+        <button on:click|preventDefault={() => imageModal.showModal()} class="btn btn-sm btn-info"
+          >Select Images</button
         >
         {#if images && images.length > 1}
-          <p class="inline-flex text-success">
+          <p class="inline-flex text-success pl-4">
             {images.length} images selected
           </p>
         {:else if images && images.length === 1}
-          <p class="inline-flex text-info">1 image selected</p>
+          <p class="inline-flex text-info pl-4">1 image selected</p>
         {:else}
-          <p class="inline-flex text-error">No images selected</p>
+          <p class="inline-flex text-error pl-4">No images selected</p>
         {/if}
       </div>
       <button
@@ -177,54 +183,6 @@
       </button>
     </form>
   </div>
-  <dialog bind:this={imageModal} class="modal text-left">
-    <div class="modal-box">
-      <input
-        type="file"
-        name="Images"
-        id="images"
-        multiple={true}
-        accept=".jpg, .jpeg, .png"
-        class="file-input file-input-bordered file-input-sm w-full max-w-xs"
-        on:change={setImages}
-      />
-      {#if images && images.length > 0}
-        <div class="pt-2">
-          <Carousel>
-            {#each images as image}
-              <div class="carousel-item">
-                <img class="block w-96 h-72" src={URL.createObjectURL(image)} alt={image.name} />
-              </div>
-            {/each}
-          </Carousel>
-        </div>
-      {/if}
-      <div class="modal-action">
-        <form method="dialog">
-          <button class="btn btn-success">Confirm</button>
-          <button class="btn btn-neutral" disabled={loading}>Close</button>
-        </form>
-      </div>
-    </div>
-  </dialog>
-  <dialog bind:this={locationModal} class="modal text-left">
-    <div class="modal-box">
-      <div class="small-map">
-        <InteractiveMap bind:latitude bind:longitude />
-      </div>
-      <div class="modal-action">
-        <form method="dialog">
-          <button class="btn btn-success">Confirm</button>
-          <button class="btn btn-neutral" disabled={loading}>Close</button>
-        </form>
-      </div>
-    </div>
-  </dialog>
+  <PickLocationModal bind:modal={locationModal} bind:latitude bind:longitude />
+  <SelectImageModal bind:modal={imageModal} bind:images />
 </section>
-
-<style>
-  .small-map {
-    width: 100%;
-    height: 50vh;
-  }
-</style>

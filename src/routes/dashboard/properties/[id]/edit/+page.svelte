@@ -1,11 +1,13 @@
 <script lang="ts">
-  import InteractiveMap from "$lib/components/InteractiveMap.svelte";
-  import { goto, invalidate, invalidateAll } from "$app/navigation";
+  import { goto, invalidateAll } from "$app/navigation";
   import * as api from "$lib/api";
   import toast from "svelte-french-toast";
   import type { PageData } from "./$types";
   import type { EditPropertyBody } from "$lib/types";
   import { setToast } from "$lib/toast";
+  import Carousel from "svelte-carousel";
+  import PickLocationModal from "$lib/components/PickLocationModal.svelte";
+  import SelectImageModal from "$lib/components/SelectImageModal.svelte";
 
   export let data: PageData;
   let loading = false;
@@ -20,6 +22,8 @@
   let latitude = data.property.latitude;
   let longitude = data.property.longitude;
   let editImageModal: HTMLDialogElement;
+  let selectImageModal: HTMLDialogElement;
+  let editLocationModal: HTMLDialogElement;
   let selectedImage: File | null = null;
 
   $: pendingChanges =
@@ -85,6 +89,7 @@
     if (!images || images.length === 0) {
       toast.error("Please select images to upload");
       loading = false;
+      selectImageModal.close();
       return;
     }
     const form = new FormData();
@@ -95,12 +100,13 @@
     const response = await api.post(fetch, "PropertyImage", data.user?.token, null, form);
     if (response.status === 200) {
       images = null;
-      toast.success("Images added successfully");
-      invalidateAll();
+      setToast({ message: "Images added successfully", type: "success" });
+      goto(`/dashboard/properties/${data.property.id}`, { replaceState: true });
     } else {
       toast.error("An error occurred while adding the images.");
     }
     loading = false;
+    selectImageModal.close();
   }
 
   async function editImage() {
@@ -126,11 +132,6 @@
     editImageModal.close();
   }
 
-  function setImages(event: Event) {
-    const target = event.target as HTMLInputElement;
-    images = target.files;
-  }
-
   function setImage(event: Event) {
     const target = event.target as HTMLInputElement;
     selectedImage = target.files ? target.files[0] : null;
@@ -138,7 +139,7 @@
 </script>
 
 <section>
-  <div class="flex flex-row">
+  <div class="flex flex-col">
     <div class="basis-1/2">
       <form
         method="POST"
@@ -215,123 +216,106 @@
             class="input input-bordered input-sm"
           />
         </div>
+        <div>
+          <label for="choose-location" class="label">Property Location</label>
+          <button
+            on:click|preventDefault={() => editLocationModal.showModal()}
+            class="btn btn-sm btn-info">Edit Location</button
+          >
+        </div>
         <button type="submit" disabled={!pendingChanges || loading} class="btn btn-accent p-2 mt-2">
           {loading ? "Saving changes..." : "Save Changes"}
         </button>
       </form>
     </div>
-    <div class="basis-1/2">
-      <div class="mx-auto mr-4">
-        <div>
-          <h1>Property Location</h1>
-          <InteractiveMap bind:latitude bind:longitude />
-        </div>
-      </div>
-    </div>
   </div>
   <div>
     <div class="flex flex-col">
-      <div class="flex mx-auto py-4"><p class="text-lg">Image Gallery</p></div>
-      <div class="flex mx-auto content-center justify-center">
-        <div class="carousel w-1/2 border-8 rounded-md border-gray-800">
-          {#each data.property.images as image, index (image.id)}
-            <div id="slide{index}" class="carousel-item relative w-full">
-              <img
-                src={image.value}
-                alt="{data.property.type} {data.property.status}"
-                class="w-full aspect-auto"
-              />
-              <button
-                on:click={() => {
-                  selectedImageId = image.id;
-                  editImageModal.showModal();
-                }}
-                class="btn btn-square btn-info btn-sm absolute top-2 right-10"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-5 w-5 lucide lucide-pencil"
-                  ><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" /><path
-                    d="m15 5 4 4"
-                  /></svg
-                ></button
-              >
-              <button
-                on:click={() => {
-                  selectedImageId = image.id;
-                  deleteImageModal.showModal();
-                }}
-                class="btn btn-square btn-error btn-sm absolute top-2 right-1"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-5 w-5 lucide lucide-trash-2"
-                  ><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path
-                    d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
-                  /><line x1="10" x2="10" y1="11" y2="17" /><line
-                    x1="14"
-                    x2="14"
-                    y1="11"
-                    y2="17"
-                  /></svg
-                ></button
-              >
-
-              <div
-                class="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2"
-              >
-                <a
-                  href="#slide{index - 1}"
-                  class="btn btn-circle {index === 0 ? 'invisible' : null}">❮</a
-                >
-                {#if index !== data.property.images.length - 1}
-                  <a href="#slide{index + 1}" class="btn btn-circle">❯</a>
-                {/if}
-              </div>
-            </div>
-          {/each}
+      <div class="flex flex-col p-2">
+        <div class="flex mx-auto">
+          <p class="inline-flex text-lg pr-2">Image Gallery</p>
+          <button
+            on:click={() => selectImageModal.showModal()}
+            class="btn btn-success btn-square btn-sm"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-badge-plus"
+              ><path
+                d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+              /><line x1="12" x2="12" y1="8" y2="16" /><line x1="8" x2="16" y1="12" y2="12" /></svg
+            ></button
+          >
         </div>
-      </div>
-    </div>
-    <div class="pl-4">
-      <form method="POST" on:submit|preventDefault={addImages}>
-        <label for="images" class="label">Add new images</label>
-        <input
-          type="file"
-          name="Images"
-          id="images"
-          multiple={true}
-          accept=".jpg, .jpeg, .png"
-          class="file-input file-input-bordered file-input-sm w-full max-w-xs"
-          on:change={setImages}
-        />
-        <button type="submit" disabled={loading} class="btn btn-accent btn-sm p-2 mt-2">
-          {loading ? "Adding images..." : "Add images"}
-        </button>
-      </form>
-      <div class="flex flex-col pb-8">
-        <h2 class="pb-4 mx-auto text-lg">Image Preview</h2>
-        {#if images && images.length > 0}
-          <div class="carousel carousel-center rounded-box mx-auto">
-            {#each images as image}
-              <div class="carousel-item">
-                <img class="block w-96 h-72" src={URL.createObjectURL(image)} alt={image.name} />
-              </div>
-            {/each}
+        <div class="flex align-middle justify-center h-full p-2">
+          <div class="flex align-middle justify-center w-4/5 max-w-lg">
+            {#key data.property.images}
+              <Carousel>
+                {#each data.property.images as image (image.id)}
+                  <div class="relative">
+                    <img
+                      src={image.value}
+                      alt="{data.property.type} {data.property.status}"
+                      class="mx-auto w-full"
+                    />
+                    <button
+                      on:click={() => {
+                        selectedImageId = image.id;
+                        editImageModal.showModal();
+                      }}
+                      class="btn btn-square btn-info btn-sm absolute top-2 right-10"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="h-5 w-5 lucide lucide-pencil"
+                        ><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" /><path
+                          d="m15 5 4 4"
+                        /></svg
+                      ></button
+                    >
+                    <button
+                      on:click={() => {
+                        selectedImageId = image.id;
+                        deleteImageModal.showModal();
+                      }}
+                      class="btn btn-square btn-error btn-sm absolute top-2 right-1"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="h-5 w-5 lucide lucide-trash-2"
+                        ><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path
+                          d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+                        /><line x1="10" x2="10" y1="11" y2="17" /><line
+                          x1="14"
+                          x2="14"
+                          y1="11"
+                          y2="17"
+                        /></svg
+                      ></button
+                    >
+                  </div>
+                {/each}
+              </Carousel>
+            {/key}
           </div>
-        {:else}
-          <div class="mx-auto my-24">No images selected</div>
-        {/if}
+        </div>
       </div>
     </div>
   </div>
@@ -378,3 +362,6 @@
     </div>
   </div>
 </dialog>
+
+<PickLocationModal bind:modal={editLocationModal} bind:latitude bind:longitude />
+<SelectImageModal bind:modal={selectImageModal} bind:images confirmFunction={addImages} />

@@ -38,7 +38,7 @@
 
 <div class="px-8">
   <div class="text-right">
-    <a href="./{data.property.id}/edit" class="btn btn-info"
+    <a href="./{data.property.id}/edit" class="btn btn-info btn-square btn-sm md:btn-md"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -55,7 +55,7 @@
     >
 
     <button
-      class="btn btn-error"
+      class="btn btn-error btn-square btn-sm md:btn-md"
       on:click={() => {
         modal.showModal();
       }}
