@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { MarkerData } from "$lib/types";
+  import type { DetailedProperty } from "$lib/types";
   import type { MapOptions, TileLayerOptions } from "leaflet";
   import "leaflet/dist/leaflet.css";
   import { LeafletMap, Marker, TileLayer, Popup } from "svelte-leafletjs";
 
-  export let property: MarkerData;
+  export let property: DetailedProperty;
 
   const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   const tileLayerOptions: TileLayerOptions = {

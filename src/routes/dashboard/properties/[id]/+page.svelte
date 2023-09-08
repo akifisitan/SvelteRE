@@ -139,5 +139,7 @@
 
 <div class="flex flex-col pb-8">
   <div class="flex mx-auto py-4"><p class="text-lg">Map Location</p></div>
-  <StaticMap property={data.property} />
+  {#key data.property}
+    <StaticMap property={data.property} />
+  {/key}
 </div>
