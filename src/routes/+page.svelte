@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Pagination from "./Pagination.svelte";
+
   import Filters from "./Filters.svelte";
   import PropertyTable from "$lib/components/PropertyTable.svelte";
   import type { PageData } from "./$types";
@@ -7,17 +9,33 @@
   import { onMount } from "svelte";
 
   export let data: PageData;
+  let queryString = "";
+  let filterModal: HTMLDialogElement;
 
   onMount(() => {
-    if ($page.url.searchParams?.get("login") === "success" && data.user) {
+    if ($page.url.searchParams?.get("login") === "success" && data.user)
       toast.success(`Logged in as ${data.user.username}`);
-    }
   });
 </script>
 
-<div class="flex flex-row">
-  <div class="filter-menu">
-    <Filters {data} />
+<section>
+  <div class="filter-modal-btn">
+    <div class="pt-2">
+      <button on:click={() => filterModal.showModal()} class="btn btn-md">Filters</button>
+      <dialog bind:this={filterModal} class="modal text-left">
+        <div class="modal-box">
+          <Filters {data} bind:queryString {filterModal} />
+        </div>
+        <form method="dialog" class="modal-backdrop">
+          <button>Close</button>
+        </form>
+      </dialog>
+    </div>
+    <Pagination {data} bind:queryString />
+  </div>
+  <div class="filter-side-menu">
+    <Filters {data} bind:queryString />
+    <Pagination {data} bind:queryString />
   </div>
   <div class="table-container">
     {#if data.maxPage > 0}
@@ -41,16 +59,40 @@
       </div>
     {/if}
   </div>
-</div>
+</section>
 
 <style>
-  .filter-menu {
+  section {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .filter-modal-btn {
+    display: none;
+  }
+
+  .filter-side-menu {
     width: 14rem;
     min-width: 14rem;
+    padding-top: 1rem;
+    padding-left: 1rem;
   }
 
   .table-container {
     padding: 1rem;
     width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    section {
+      flex-direction: column;
+    }
+    .filter-side-menu {
+      display: none;
+    }
+    .filter-modal-btn {
+      display: flex;
+      margin: auto;
+    }
   }
 </style>

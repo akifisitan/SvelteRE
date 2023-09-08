@@ -3,14 +3,13 @@
   import type { PageData } from "./$types";
 
   export let data: PageData;
-  let queryString = "";
+  export let queryString;
+  export let filterModal: HTMLDialogElement | null = null;
   let minPrice = 0;
   let maxPrice = 9999999;
   let typeId = 0;
   let currencyId = 0;
   let statusId = 0;
-  $: maxPage = data.maxPage;
-  $: currentPage = data.currentPage;
 
   function clearFilters() {
     minPrice = 0;
@@ -20,6 +19,7 @@
     statusId = 0;
     queryString = "";
     goto("/", { replaceState: true });
+    filterModal?.close();
   }
 
   function filter() {
@@ -38,10 +38,11 @@
       queryString = `&${arr.join("&")}`;
       goto(`/?${arr.join("&")}`, { replaceState: true });
     }
+    filterModal?.close();
   }
 </script>
 
-<div class="flex flex-row pt-4 pl-4">
+<div class="flex flex-row">
   <ul class="menu bg-base-200 rounded-box mx-auto">
     <h2 class="text-center text-lg">Filters</h2>
     <li>
@@ -132,27 +133,4 @@
       </div>
     </li>
   </ul>
-</div>
-<div class="flex flex-row pt-2 w-full">
-  <div class="join w-fit mx-auto justify-center">
-    {#if maxPage > 0}
-      {#if currentPage === 1}
-        <button disabled class="join-item btn w-1/6"> « </button>
-      {:else}
-        <a class="join-item btn w-1/6" href="/?page={currentPage - 1}{queryString}"> « </a>
-      {/if}
-      <button class="join-item btn w-2/5">
-        Page {currentPage} / {maxPage}
-      </button>
-      {#if currentPage === maxPage}
-        <button disabled class="join-item btn w-1/6"> » </button>
-      {:else}
-        <a class="join-item btn w-1/6" href="/?page={currentPage + 1}{queryString}"> » </a>
-      {/if}
-    {:else}
-      <button disabled class="join-item btn w-1/6"> « </button>
-      <button class="join-item btn w-2/5"> Page 1 / 1 </button>
-      <button disabled class="join-item btn w-1/6"> » </button>
-    {/if}
-  </div>
 </div>
