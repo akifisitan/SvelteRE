@@ -26,7 +26,8 @@
 <style>
   .property-table {
     display: grid;
-    gap: 1rem;
+    column-gap: 0.5rem;
+    row-gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(5rem, 10rem));
   }
 </style>

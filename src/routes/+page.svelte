@@ -45,8 +45,8 @@
 
 <style>
   .filter-menu {
-    width: 13rem;
-    min-width: 13rem;
+    width: 14rem;
+    min-width: 14rem;
   }
 
   .table-container {

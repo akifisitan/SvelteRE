@@ -6,7 +6,7 @@
 <nav class="navbar bg-base-100">
   <div class="navbar-start">
     <div class="dropdown dropdown-bottom dropdown-hover">
-      <label for="" tabindex="-1" class="btn btn-ghost lg:hidden">
+      <label for="dropdown" tabindex="-1" class="btn btn-ghost lg:hidden">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5"
@@ -22,6 +22,7 @@
         >
       </label>
       <ul
+        id="dropdown"
         tabindex="-1"
         class="dropdown-content z-[1000] menu p-2 shadow bg-base-100 rounded-box w-fit"
       >
