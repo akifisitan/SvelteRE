@@ -158,6 +158,15 @@
         <button on:click|preventDefault={() => imageModal.showModal()} class="btn btn-sm"
           >Add Images</button
         >
+        {#if images && images.length > 1}
+          <p class="inline-flex text-success">
+            {images.length} images selected
+          </p>
+        {:else if images && images.length === 1}
+          <p class="inline-flex text-info">1 image selected</p>
+        {:else}
+          <p class="inline-flex text-error">No images selected</p>
+        {/if}
       </div>
       <button
         type="submit"
