@@ -36,26 +36,20 @@
   }
 </script>
 
-<div class="map-container mx-auto">
-  <div class="map m-auto">
-    <LeafletMap bind:this={leafletMap} options={mapOptions}>
-      <TileLayer url={tileUrl} options={tileLayerOptions} />
-      <Marker
-        events={["dragend"]}
-        bind:this={marker}
-        latLng={[latitude, longitude]}
-        on:dragend={updateMarker}
-        options={{ draggable: true }}
-      />
-    </LeafletMap>
-  </div>
+<div class="map m-auto">
+  <LeafletMap bind:this={leafletMap} options={mapOptions}>
+    <TileLayer url={tileUrl} options={tileLayerOptions} />
+    <Marker
+      events={["dragend"]}
+      bind:this={marker}
+      latLng={[latitude, longitude]}
+      on:dragend={updateMarker}
+      options={{ draggable: true }}
+    />
+  </LeafletMap>
 </div>
 
 <style>
-  .map-container {
-    height: 60vh;
-    width: 50vw;
-  }
   .map {
     height: 100%;
     width: 100%;

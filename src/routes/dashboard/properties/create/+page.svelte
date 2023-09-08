@@ -6,6 +6,7 @@
   import toast from "svelte-french-toast";
   import type { PageData } from "./$types";
   import { setToast } from "$lib/toast";
+  import Carousel from "svelte-carousel";
 
   export let data: PageData;
   let loading = false;
@@ -17,6 +18,8 @@
   let images: FileList | null = null;
   let latitude = centerLat;
   let longitude = centerLong;
+  let imageModal: HTMLDialogElement;
+  let locationModal: HTMLDialogElement;
 
   function allFilled() {
     if (price && typeId && statusId && currencyId && endDate) return true;
@@ -68,7 +71,7 @@
 </script>
 
 <section class="flex flex-row">
-  <div class="basis-1/2">
+  <div class="basis-full">
     <form
       method="POST"
       on:submit|preventDefault={createProperty}
@@ -145,16 +148,16 @@
         />
       </div>
       <div>
-        <label for="images" class="label">Property Images</label>
-        <input
-          type="file"
-          name="Images"
-          id="images"
-          multiple={true}
-          accept=".jpg, .jpeg, .png"
-          class="file-input file-input-bordered file-input-sm w-full max-w-xs"
-          on:change={setImages}
-        />
+        <label for="choose-location" class="label">Property Location</label>
+        <button on:click|preventDefault={() => locationModal.showModal()} class="btn btn-sm"
+          >Choose Location</button
+        >
+      </div>
+      <div>
+        <label for="add-images" class="label">Property Images</label>
+        <button on:click|preventDefault={() => imageModal.showModal()} class="btn btn-sm"
+          >Add Images</button
+        >
       </div>
       <button
         type="submit"
@@ -165,28 +168,54 @@
       </button>
     </form>
   </div>
-  <div class="basis-1/2">
-    <div class="mx-auto mr-4">
-      <div>
-        <h1 class="text-lg pb-2">Property Location</h1>
-        <InteractiveMap bind:latitude bind:longitude />
-      </div>
-      <div>
-        <h1 class="text-lg py-2">Image Preview</h1>
-        <div class="flex">
-          {#if images && images.length > 0}
-            <div class="carousel carousel-center rounded-box mx-auto">
-              {#each images as image}
-                <div class="carousel-item">
-                  <img class="block w-96 h-72" src={URL.createObjectURL(image)} alt={image.name} />
-                </div>
-              {/each}
-            </div>
-          {:else}
-            <div class="mx-auto my-24">No images selected</div>
-          {/if}
+  <dialog bind:this={imageModal} class="modal text-left">
+    <div class="modal-box">
+      <input
+        type="file"
+        name="Images"
+        id="images"
+        multiple={true}
+        accept=".jpg, .jpeg, .png"
+        class="file-input file-input-bordered file-input-sm w-full max-w-xs"
+        on:change={setImages}
+      />
+      {#if images && images.length > 0}
+        <div class="pt-2">
+          <Carousel>
+            {#each images as image}
+              <div class="carousel-item">
+                <img class="block w-96 h-72" src={URL.createObjectURL(image)} alt={image.name} />
+              </div>
+            {/each}
+          </Carousel>
         </div>
+      {/if}
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-success">Confirm</button>
+          <button class="btn btn-neutral" disabled={loading}>Close</button>
+        </form>
       </div>
     </div>
-  </div>
+  </dialog>
+  <dialog bind:this={locationModal} class="modal text-left">
+    <div class="modal-box">
+      <div class="small-map">
+        <InteractiveMap bind:latitude bind:longitude />
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-success">Confirm</button>
+          <button class="btn btn-neutral" disabled={loading}>Close</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
 </section>
+
+<style>
+  .small-map {
+    width: 100%;
+    height: 50vh;
+  }
+</style>

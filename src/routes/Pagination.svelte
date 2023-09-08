@@ -1,16 +1,8 @@
 <script lang="ts">
   import type { PageData } from "./$types";
-  import { page } from "$app/stores";
-  import toast from "svelte-french-toast";
-  import { onMount } from "svelte";
 
   export let data: PageData;
   export let queryString: string;
-
-  onMount(() => {
-    if ($page.url.searchParams?.get("login") === "success" && data.user)
-      toast.success(`Logged in as ${data.user.username}`);
-  });
 </script>
 
 <div class="flex flex-row w-full pt-2">
