@@ -3,7 +3,7 @@
   import type { MouseEventHandler } from "svelte/elements";
   export let modal: HTMLDialogElement;
   export let images: FileList | null;
-  export let loading: boolean;
+  export let loading: boolean = false;
   export let confirmFunction: MouseEventHandler<HTMLButtonElement> | null = null;
 
   function setImages(event: Event) {
