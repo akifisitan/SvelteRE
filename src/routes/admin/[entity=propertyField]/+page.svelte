@@ -47,7 +47,6 @@
       value: value,
     });
     value = "";
-    console.log(status);
     if (status === 200) {
       toast.success("Entity edited successfully");
       invalidateAll();

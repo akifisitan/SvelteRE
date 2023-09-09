@@ -1,12 +1,9 @@
-import type { ShowcaseProperty } from "$lib/types";
 import type { PageServerLoad } from "./$types";
 import * as api from "$lib/api";
 import { error } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async ({ fetch, locals }) => {
-  const { data, status } = await api.get(fetch, "api/Authenticate/users/list", locals.user?.token);
-
-  console.log(data);
+  const { data, status } = await api.get(fetch, "User/list", locals.user?.token);
 
   switch (status) {
     case 200:
