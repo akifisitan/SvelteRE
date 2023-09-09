@@ -2,7 +2,9 @@ import { error } from "@sveltejs/kit";
 import { dev } from "$app/environment";
 import type { SendOptions } from "./types";
 
-const base = dev ? "http://127.0.0.1:5000" : "https://realestateapp-api.hop.sh";
+const base = dev ? "http://127.0.0.1:5000" : "https://realestateapp-api.fly.dev";
+// https://realestateapp-api.fly.dev
+// https://realestateapp-api.hop.sh
 
 async function send(
   fetch: typeof globalThis.fetch,
