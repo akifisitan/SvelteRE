@@ -3,10 +3,10 @@
 </script>
 
 <div class="flex">
-  <div class="flex basis-36">
+  <div>
     <AdminSideMenu />
   </div>
-  <div class="flex basis-4/5">
+  <div class="w-full">
     <slot />
   </div>
 </div>
