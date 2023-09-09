@@ -10,7 +10,7 @@
     {#each properties as property}
       <div>
         <a href="{path}{property.id}">
-          <img class="m-auto w-32 h-24" src={property.thumbnail} alt="Property View" />
+          <img src={property.thumbnail} alt="{property.type} {property.status}" />
         </a>
         <p class="text-center">
           {property.type}
@@ -27,8 +27,10 @@
 <style>
   .property-table {
     display: grid;
-    column-gap: 0.5rem;
-    row-gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(5rem, 10rem));
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  }
+  img {
+    width: 100%;
   }
 </style>

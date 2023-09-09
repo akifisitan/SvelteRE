@@ -14,11 +14,11 @@
 </script>
 
 <div class="flex flex-col">
-  <div class="pt-2 pl-4 pb-4">
-    <h2 class="text-xl inline-block pr-2 align-middle">My Properties</h2>
-    <a href="/dashboard/properties/create" class="btn btn-accent btn-sm"> Create New </a>
+  <div class="flex items-center py-2 px-4">
+    <h2 class="inline-flex text-xl pr-2 align-middle font-semibold">My Properties</h2>
+    <a href="/dashboard/properties/create" class="btn btn-accent btn-sm ml-auto"> Create New </a>
   </div>
-  <div class="px-2">
+  <div class="p-2">
     <PropertyTable properties={data.propertyList} path="/dashboard/properties/" />
   </div>
 </div>

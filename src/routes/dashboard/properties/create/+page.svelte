@@ -154,31 +154,27 @@
           class="btn btn-sm btn-info">Choose Location</button
         >
         {#if latitude === centerLat && longitude === centerLong}
-          <p class="inline-flex text-error pl-2">Location not chosen</p>
+          <p class="inline-flex text-error font-semibold pl-2">Location not chosen</p>
         {:else}
-          <p class="inline-flex text-success pl-2">Location chosen</p>
+          <p class="inline-flex text-success font-semibold pl-2">Location chosen</p>
         {/if}
       </div>
-      <div>
+      <div class="pb-4">
         <label for="add-images" class="label">Property Images</label>
         <button on:click|preventDefault={() => imageModal.showModal()} class="btn btn-sm btn-info"
           >Select Images</button
         >
         {#if images && images.length > 1}
-          <p class="inline-flex text-success pl-4">
+          <p class="inline-flex text-success font-semibold pl-4">
             {images.length} images selected
           </p>
         {:else if images && images.length === 1}
-          <p class="inline-flex text-info pl-4">1 image selected</p>
+          <p class="inline-flex text-info font-semibold pl-4">1 image selected</p>
         {:else}
-          <p class="inline-flex text-error pl-4">No images selected</p>
+          <p class="inline-flex text-error font-semibold pl-4">No images selected</p>
         {/if}
       </div>
-      <button
-        type="submit"
-        disabled={loading}
-        class="btn btn-accent p-2 mt-2 disabled:cursor-not-allowed"
-      >
+      <button type="submit" disabled={loading} class="btn btn-accent p-2">
         {loading ? "Creating property..." : "Create Property"}
       </button>
     </form>

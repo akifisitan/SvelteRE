@@ -26,10 +26,10 @@
         tabindex="-1"
         class="dropdown-content z-[1000] menu p-2 shadow bg-base-100 rounded-box w-fit"
       >
-        <li><a href="/map" class="btn btn-ghost normal-case text-base"> Map </a></li>
+        <li><a href="/map" class="btn btn-ghost normal-case text-base pt-3"> Map </a></li>
         {#if $page.data.user}
           <li>
-            <a href="/dashboard" class="btn btn-ghost normal-case text-base">Dashboard</a>
+            <a href="/dashboard" class="btn btn-ghost normal-case text-base pt-3">Dashboard</a>
           </li>
         {/if}
       </ul>
@@ -47,18 +47,40 @@
         <button class="btn btn-ghost normal-case text-base">{$page.data.user.username}</button>
         <ul
           tabindex="-1"
-          class="dropdown-content z-[1000] menu p-2 shadow bg-base-100 rounded-box w-48"
+          class="dropdown-content z-[1000] menu p-2 shadow bg-base-100 rounded-box w-44"
         >
           {#if $page.data.user.roles.includes("Admin")}
-            <li><a href="/admin" class="normal-case text-base"> Admin Dashboard</a></li>
+            <li>
+              <a
+                href="/admin"
+                class="inline-flex justify-center items-center text-center normal-case text-base font-semibold"
+              >
+                Admin Dashboard</a
+              >
+            </li>
           {/if}
-          <li><a href="/dashboard/properties" class="normal-case text-base"> My Properties</a></li>
           <li>
-            <a href="/dashboard/properties/create" class="normal-case text-base"> New Property</a>
+            <a
+              href="/dashboard/properties"
+              class="inline-flex justify-center items-center text-center normal-case text-base font-semibold"
+            >
+              My Properties</a
+            >
+          </li>
+          <li>
+            <a
+              href="/dashboard/properties/create"
+              class="inline-flex justify-center items-center text-center normal-case text-base font-semibold"
+            >
+              New Property</a
+            >
           </li>
           <li>
             <form class="flex" action="/logout" method="POST" use:enhance>
-              <button type="submit" class="normal-case w-full h-full text-base text-red-700">
+              <button
+                type="submit"
+                class="normal-case w-full h-full text-base font-semibold text-red-700"
+              >
                 Logout
               </button>
             </form>
