@@ -1,10 +1,8 @@
 import { error } from "@sveltejs/kit";
-import { dev } from "$app/environment";
+import { env } from "$env/dynamic/public";
 import type { SendOptions } from "./types";
 
-const base = dev ? "http://127.0.0.1:5000" : "https://realestateapp-api.fly.dev";
-// https://realestateapp-api.fly.dev
-// https://realestateapp-api.hop.sh
+const base = env.PUBLIC_OVERRIDE_BASE_URL ?? "https://realestateapp-api.fly.dev";
 
 async function send(
   fetch: typeof globalThis.fetch,
