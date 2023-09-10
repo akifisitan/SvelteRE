@@ -9,28 +9,44 @@
 </script>
 
 <div class="px-8">
-  <div class="text-xl">
-    <h2 class="text-2xl font-bold pt-2">Listing Date</h2>
-    <p class="text-lg pb-2">
-      {formatDate(property.startDate, "dd/MM/yyyy")} - {formatDate(property.endDate, "dd/MM/yyyy")}
-    </p>
-    <p>
-      {property.type}
-    </p>
-    <p>
-      {property.status}
-    </p>
-    <p>
-      {property.price}
-      {property.currency}
-    </p>
-    <p>Owner: {property.owner}</p>
+  <div class="sm:text-lg">
+    <div class="py-2">
+      <h2 class="font-bold">Owner Info</h2>
+      <p>
+        {property.owner.username}<br />{property.owner.email}
+      </p>
+    </div>
+    <div class="py-2">
+      <h2 class="font-bold">Listing Date</h2>
+      <p>
+        {formatDate(property.startDate, "dd/MM/yyyy")} - {formatDate(
+          property.endDate,
+          "dd/MM/yyyy"
+        )}
+      </p>
+    </div>
+    <div class="py-2">
+      <h2 class="font-bold">Property Info</h2>
+      <p>
+        {property.type}
+      </p>
+      <p>
+        {property.status}
+      </p>
+      <p>
+        {property.price}
+        {property.currency}
+      </p>
+    </div>
   </div>
 </div>
 
-<ImageCarousel property={data.property} />
+<div class="flex flex-col pt-2">
+  <div class="flex mx-auto"><p class="font-bold sm:text-lg">Property Images</p></div>
+  <ImageCarousel property={data.property} />
+</div>
 
 <div class="flex flex-col pb-8">
-  <div class="flex mx-auto py-4"><p class="text-lg">Map Location</p></div>
+  <div class="flex mx-auto py-4"><p class="font-bold sm:text-lg">Property Location</p></div>
   <StaticMap {property} />
 </div>

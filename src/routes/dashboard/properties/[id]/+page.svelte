@@ -90,31 +90,40 @@
       </div>
     </dialog>
   </div>
-  <div class="text-xl">
-    <h2 class="text-2xl font-bold">Listing Date</h2>
-    <p>
-      {formatDate(data.property.startDate, "dd/MM/yyyy")} - {formatDate(
-        data.property.endDate,
-        "dd/MM/yyyy"
-      )}
-    </p>
-    <p>
-      {data.property.type}
-    </p>
-    <p>
-      {data.property.status}
-    </p>
-    <p>
-      {data.property.price}
-      {data.property.currency}
-    </p>
+
+  <div class="sm:text-lg">
+    <div class="py-2">
+      <h2 class="font-bold">Listing Date</h2>
+      <p>
+        {formatDate(data.property.startDate, "dd/MM/yyyy")} - {formatDate(
+          data.property.endDate,
+          "dd/MM/yyyy"
+        )}
+      </p>
+    </div>
+    <div class="py-2">
+      <h2 class="font-bold">Property Info</h2>
+      <p>
+        {data.property.type}
+      </p>
+      <p>
+        {data.property.status}
+      </p>
+      <p>
+        {data.property.price}
+        {data.property.currency}
+      </p>
+    </div>
   </div>
 </div>
 
-<ImageCarousel property={data.property} />
+<div class="flex flex-col pt-2">
+  <div class="flex mx-auto"><p class="font-bold sm:text-lg">Property Images</p></div>
+  <ImageCarousel property={data.property} />
+</div>
 
 <div class="flex flex-col pb-8">
-  <div class="flex mx-auto py-4"><p class="text-lg">Map Location</p></div>
+  <div class="flex mx-auto py-4"><p class="font-bold sm:text-lg">Property Location</p></div>
   {#key data.property}
     <StaticMap property={data.property} />
   {/key}

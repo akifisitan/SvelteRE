@@ -14,9 +14,9 @@
   const mapOptions: MapOptions = {
     center: [property.latitude, property.longitude],
     zoom: 6,
-    scrollWheelZoom: false,
     attributionControl: false,
-    dragging: false,
+    scrollWheelZoom: true,
+    dragging: true,
   };
 </script>
 

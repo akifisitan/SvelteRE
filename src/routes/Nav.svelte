@@ -6,7 +6,7 @@
 <nav class="navbar bg-base-100">
   <div class="navbar-start">
     <div class="dropdown dropdown-bottom dropdown-hover">
-      <label for="dropdown" tabindex="-1" class="btn btn-ghost lg:hidden">
+      <label for="dropdown" tabindex="-1" class="btn btn-ghost sm:hidden">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5"
@@ -35,9 +35,9 @@
       </ul>
     </div>
     <a href="/" class="btn btn-ghost font-bold normal-case text-lg text-orange-600"> SvelteRE </a>
-    <a href="/map" class="btn btn-ghost normal-case text-base hidden lg:flex"> Map </a>
+    <a href="/map" class="btn btn-ghost normal-case text-base hidden sm:flex"> Map </a>
     {#if $page.data.user}
-      <a href="/dashboard" class="btn btn-ghost normal-case text-base hidden lg:flex">Dashboard</a>
+      <a href="/dashboard" class="btn btn-ghost normal-case text-base hidden sm:flex">Dashboard</a>
     {/if}
   </div>
 
