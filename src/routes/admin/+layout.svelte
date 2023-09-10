@@ -3,7 +3,7 @@
 </script>
 
 <div class="flex">
-  <div>
+  <div class="px-2">
     <AdminSideMenu />
   </div>
   <div class="w-full">

@@ -30,6 +30,11 @@ export interface PropertyImage {
   value: string;
 }
 
+export interface Owner {
+  username: string;
+  email: string;
+}
+
 export interface DetailedProperty {
   id: number;
   price: number;
@@ -41,7 +46,7 @@ export interface DetailedProperty {
   type: string;
   status: string;
   currency: string;
-  owner: string;
+  owner: Owner;
 }
 
 export interface Toast {
@@ -68,4 +73,9 @@ export interface MarkerData {
   type: string;
   status: string;
   currency: string;
+}
+
+export interface PropertyField {
+  id: number;
+  value: string;
 }
