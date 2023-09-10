@@ -53,8 +53,8 @@ export interface EditPropertyBody {
   id: number;
   price?: number;
   endDate?: string;
-  typeId?: number;
-  statusId?: number;
+  propertyTypeId?: number;
+  propertyStatusId?: number;
   currencyId?: number;
   latitude?: number;
   longitude?: number;

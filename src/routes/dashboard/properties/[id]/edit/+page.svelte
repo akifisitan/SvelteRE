@@ -45,10 +45,10 @@
       body.endDate = endDate;
     }
     if (typeId !== -1) {
-      body.typeId = typeId;
+      body.propertyTypeId = typeId;
     }
     if (statusId !== -1) {
-      body.statusId = statusId;
+      body.propertyStatusId = statusId;
     }
     if (currencyId !== -1) {
       body.currencyId = currencyId;
@@ -65,6 +65,7 @@
       goto(`/dashboard/properties/${data.property.id}`, { replaceState: true });
     } else {
       toast.error("An error occurred while editing the property.");
+      console.log("An error occurred while editing the property. ", response.status);
       loading = false;
     }
   }
