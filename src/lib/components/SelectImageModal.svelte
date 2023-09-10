@@ -17,13 +17,15 @@
     <h3 class="font-bold text-lg pb-2">Select Images</h3>
     {#if images && images.length > 0}
       <div class="py-2">
-        <Carousel>
-          {#each images as image}
-            <div class="carousel-item">
-              <img class="block w-96 h-72" src={URL.createObjectURL(image)} alt={image.name} />
-            </div>
-          {/each}
-        </Carousel>
+        {#key images}
+          <Carousel>
+            {#each images as image}
+              <div class="carousel-item">
+                <img class="block w-96 h-72" src={URL.createObjectURL(image)} alt={image.name} />
+              </div>
+            {/each}
+          </Carousel>
+        {/key}
       </div>
     {/if}
     <input
