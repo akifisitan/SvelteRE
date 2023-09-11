@@ -119,7 +119,9 @@
 
 <div class="flex flex-col pt-2">
   <div class="flex mx-auto"><p class="font-bold sm:text-lg">Property Images</p></div>
-  <ImageCarousel property={data.property} />
+  {#key data.property}
+    <ImageCarousel property={data.property} />
+  {/key}
 </div>
 
 <div class="flex flex-col pb-8">
