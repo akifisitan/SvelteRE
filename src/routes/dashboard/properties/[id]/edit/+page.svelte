@@ -1,11 +1,12 @@
 <script lang="ts">
+  // @ts-ignore
+  import Carousel from "svelte-carousel";
   import { goto, invalidateAll } from "$app/navigation";
   import * as api from "$lib/api";
   import toast from "svelte-french-toast";
   import type { PageData } from "./$types";
   import type { EditPropertyBody } from "$lib/types";
-  import { setToast } from "$lib/toast";
-  import Carousel from "svelte-carousel";
+  import { prepareToast } from "$lib/toast-utilities";
   import PickLocationModal from "$lib/components/PickLocationModal.svelte";
   import SelectImageModal from "$lib/components/SelectImageModal.svelte";
 
@@ -61,7 +62,7 @@
     }
     const response = await api.put(fetch, "Property", data.user?.token, body);
     if (response.status === 204) {
-      setToast({ message: "Property edited successfully", type: "success" });
+      prepareToast({ message: "Property edited successfully", type: "success" });
       goto(`/dashboard/properties/${data.property.id}`, { replaceState: true });
     } else {
       toast.error("An error occurred while editing the property.");
@@ -101,7 +102,7 @@
     const response = await api.post(fetch, "PropertyImage", data.user?.token, null, form);
     if (response.status === 200) {
       images = null;
-      setToast({ message: "Images added successfully", type: "success" });
+      prepareToast({ message: "Images added successfully", type: "success" });
       goto(`/dashboard/properties/${data.property.id}`, { replaceState: true });
     } else {
       toast.error("An error occurred while adding the images.");

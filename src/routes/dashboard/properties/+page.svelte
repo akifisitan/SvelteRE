@@ -1,15 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { getToast } from "$lib/toast";
-  import toast from "svelte-french-toast";
+  import { handleStoredToast } from "$lib/toast-utilities";
   import type { PageData } from "./$types";
   import PropertyTable from "$lib/components/PropertyTable.svelte";
 
   export let data: PageData;
 
   onMount(() => {
-    const toastData = getToast();
-    if (toastData) toast.success(toastData.message);
+    handleStoredToast();
   });
 </script>
 

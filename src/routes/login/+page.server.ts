@@ -2,7 +2,7 @@ import { fail, redirect } from "@sveltejs/kit";
 import type { Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import * as api from "$lib/api";
-import type { UserInfo, LoginResponse } from "$lib/types";
+import type { UserInfo } from "$lib/types";
 
 export const load: PageServerLoad = async ({ locals }) => {
   if (locals.user) throw redirect(303, "/");
@@ -30,7 +30,7 @@ export const actions: Actions = {
         secure: process.env.NODE_ENV === "production",
       });
 
-      throw redirect(303, "/?login=success");
+      throw redirect(303, "/");
     }
     if (response.status === 401) {
       return fail(401, { error: "Invalid credentials" });

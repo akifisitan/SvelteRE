@@ -2,6 +2,7 @@
   import { enhance } from "$app/forms";
   import toast from "svelte-french-toast";
   import type { ActionData, SubmitFunction } from "./$types.js";
+  import { prepareToast } from "$lib/toast-utilities.js";
 
   export let form: ActionData;
   let signingUp = false;
@@ -10,12 +11,19 @@
     toast.error(form.error);
   }
 
-  const register: SubmitFunction = (input) => {
+  const register: SubmitFunction = ({ formData }) => {
     signingUp = true;
 
     return async ({ update, result }) => {
       await update();
-      if (result.type === "error" || result.type === "failure") signingUp = false;
+      if (result.type === "error" || result.type === "failure") {
+        signingUp = false;
+      } else {
+        prepareToast({
+          message: "Account created successfully",
+          type: "success",
+        });
+      }
     };
   };
 </script>

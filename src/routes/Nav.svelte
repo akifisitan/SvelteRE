@@ -1,6 +1,13 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { page } from "$app/stores";
+  import { handleStoredToast, prepareToast } from "$lib/toast-utilities";
+
+  $: {
+    if (!$page.data.user) {
+      handleStoredToast();
+    }
+  }
 </script>
 
 <nav class="navbar bg-base-100">
@@ -79,6 +86,8 @@
             <form class="flex" action="/logout" method="POST" use:enhance>
               <button
                 type="submit"
+                on:click={() =>
+                  prepareToast({ message: "Logged out successfully", type: "success" })}
                 class="normal-case w-full h-full text-base font-semibold text-red-700"
               >
                 Logout

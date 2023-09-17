@@ -56,7 +56,7 @@ export const actions: Actions = {
     };
     const { status } = await api.post(fetch, "api/Authenticate/register", null, body);
 
-    if (status === 200) throw redirect(303, "/login?accountCreated=true");
+    if (status === 200) throw redirect(303, "/login");
 
     if (status === 400) return fail(400, { error: "Invalid data" });
 

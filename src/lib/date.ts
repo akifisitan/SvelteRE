@@ -5,7 +5,7 @@ export function formatDate(dateString: string, format: string) {
       return `${day}/${month}/${year}`;
     case "MM/dd/yyyy":
       return `${month}/${day}/${year}`;
-    default:
+    default: // yyyy-MM-dd
       return dateString;
   }
 }

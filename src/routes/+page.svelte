@@ -1,20 +1,17 @@
 <script lang="ts">
   import Pagination from "./Pagination.svelte";
-
   import Filters from "./Filters.svelte";
   import PropertyTable from "$lib/components/PropertyTable.svelte";
   import type { PageData } from "./$types";
-  import { page } from "$app/stores";
-  import toast from "svelte-french-toast";
   import { onMount } from "svelte";
+  import { handleStoredToast } from "$lib/toast-utilities";
 
   export let data: PageData;
   let queryString = "";
   let filterModal: HTMLDialogElement;
 
   onMount(() => {
-    if ($page.url.searchParams?.get("login") === "success" && data.user)
-      toast.success(`Logged in as ${data.user.username}`);
+    handleStoredToast();
   });
 </script>
 

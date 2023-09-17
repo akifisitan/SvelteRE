@@ -4,7 +4,7 @@
   import { goto } from "$app/navigation";
   import toast from "svelte-french-toast";
   import type { PageData } from "./$types";
-  import { setToast } from "$lib/toast";
+  import { prepareToast } from "$lib/toast-utilities";
   import PickLocationModal from "$lib/components/PickLocationModal.svelte";
   import SelectImageModal from "$lib/components/SelectImageModal.svelte";
 
@@ -57,7 +57,7 @@
     }
     const response = await api.post(fetch, "Property", data.user?.token, null, form);
     if (response.status === 200) {
-      setToast({ message: "Property created successfully", type: "success" });
+      prepareToast({ message: "Property created successfully", type: "success" });
       goto("/dashboard", { replaceState: true });
     } else if (response.status === 400) {
       toast.error(response.data.message);

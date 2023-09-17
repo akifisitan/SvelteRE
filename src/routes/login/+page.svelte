@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { page } from "$app/stores";
   import { enhance } from "$app/forms";
   import { onMount } from "svelte";
   import { invalidateAll } from "$app/navigation";
   import { toast } from "svelte-french-toast";
   import type { SubmitFunction } from "@sveltejs/kit";
   import type { ActionData } from "./$types";
+  import { handleStoredToast, prepareToast } from "$lib/toast-utilities";
 
   export let form: ActionData;
   let loggingIn = false;
@@ -16,17 +16,22 @@
 
   onMount(() => {
     invalidateAll();
-    if ($page.url.searchParams?.get("accountCreated") === "true") {
-      toast.success("Account created successfully");
-    }
+    handleStoredToast();
   });
 
-  const login: SubmitFunction = (input) => {
+  const login: SubmitFunction = ({ formData }) => {
     loggingIn = true;
 
     return async ({ update, result }) => {
       await update();
-      if (result.type === "error" || result.type === "failure") loggingIn = false;
+      if (result.type === "error" || result.type === "failure") {
+        loggingIn = false;
+      } else {
+        prepareToast({
+          message: `Logged in as ${formData.get("username")}`,
+          type: "success",
+        });
+      }
     };
   };
 </script>

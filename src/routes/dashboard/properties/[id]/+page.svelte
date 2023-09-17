@@ -2,8 +2,8 @@
   import { goto, invalidateAll } from "$app/navigation";
   import StaticMap from "$lib/components/StaticMap.svelte";
   import { formatDate } from "$lib/date";
-  import { getToast, setToast } from "$lib/toast";
-  import toast, { Toaster } from "svelte-french-toast";
+  import { handleStoredToast, prepareToast } from "$lib/toast-utilities";
+  import toast from "svelte-french-toast";
   import * as api from "$lib/api";
   import { onMount } from "svelte";
   import type { PageData } from "./$types";
@@ -14,18 +14,15 @@
   let modal: HTMLDialogElement;
 
   onMount(() => {
-    const toastData = getToast();
-    if (toastData) {
-      invalidateAll();
-      toast.success(toastData.message);
-    }
+    const toastHandled = handleStoredToast();
+    if (toastHandled) invalidateAll();
   });
 
   async function handleDelete() {
     deleting = true;
     const { status } = await api.del(fetch, `Property?id=${data.property.id}`, data.user?.token);
     if (status === 204) {
-      setToast({ message: "Property deleted successfully", type: "success" });
+      prepareToast({ message: "Property deleted successfully", type: "success" });
       goto("/dashboard/properties");
     } else {
       console.log("An error occurred while deleting the property. ", status);
