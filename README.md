@@ -2,26 +2,22 @@
 
 ## Intro
 
-Complete version of the Real Estate listing website built as a single page application using [SvelteKit](https://kit.svelte.dev/)
+Real Estate listing website built using [Svelte](https://svelte.dev/) and [SvelteKit](https://kit.svelte.dev/)
 
-- This project was built as an internship project in a week, helping grasp current frontend technologies used to consume Restful Web APIs like [one built for this project](https://github.com/akifisitan/RealEstateApp.Api/) specifically
-- This project paved the way to the development of [SvelteRE](https://github.com/akifisitan/SvelteRE/), the same app built using SvelteKit
+- I built this project because I wanted to learn Svelte and SvelteKit, and so I ported [RealEstateApp](https://github.com/akifisitan/RealEstateApp) over to use the more performant and intuitive Svelte and it's application framework SvelteKit's SSR and file system based routing.
 
-## Demo
+## Technologies Used
 
-- Demo video coming soon
-
-## Used technologies
-
-- [Vite](https://vitejs.dev/) React Template
+- [Svelte](https://svelte.dev/)
+- [SvelteKit](https://kit.svelte.dev/)
+- [Typescript](https://www.typescriptlang.org/)
 - [TailwindCSS](https://tailwindcss.com/)
 - [DaisyUI](https://daisyui.com/)
 
 ## Usage
 
 - Make sure you have the [Backend API](https://github.com/akifisitan/RealEstateApp.Api/) running
-- Make sure you have [NodeJS](https://nodejs.org/en) v18 or higher installed
+- Make sure you have [NodeJS](https://nodejs.org/en) v18 or newer installed
 - Clone the repo, open a terminal and navigate to the repo root directory
-- Run `npm install` to install packages
-- Run `npm run dev` to start the development server
+- Run `npm install` to install packages and `npm run dev` to start the development server
 - Navigate to http://localhost:5173/
