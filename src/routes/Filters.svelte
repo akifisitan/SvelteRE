@@ -5,6 +5,7 @@
   export let data: PageData;
   export let queryString;
   export let filterModal: HTMLDialogElement | null = null;
+  export let mobileLayout = false;
   let minPrice = 0;
   let maxPrice = 9999999;
   let typeId = 0;
@@ -42,17 +43,17 @@
   }
 </script>
 
-<div class="flex flex-row">
-  <ul class="menu bg-base-200 rounded-box mx-auto">
-    <h2 class="text-center text-lg">Filters</h2>
+<div class="flex flex-col menu bg-base-200 rounded-box">
+  <h2 class="text-center text-lg">Filters</h2>
+  <ul class="mx-auto">
     <li>
       <div>
-        <label for="minPrice" class="label">Min</label>
+        <label for={mobileLayout ? "m-minPrice" : "minPrice"} class="label">Min</label>
         <input
           type="number"
           min={0}
           max={9999999}
-          id="minPrice"
+          id={mobileLayout ? "m-minPrice" : "minPrice"}
           bind:value={minPrice}
           class="input input-bordered input-sm w-full max-w-xs"
         />
@@ -60,9 +61,9 @@
     </li>
     <li>
       <div>
-        <label for="maxPrice" class="label">Max</label>
+        <label for={mobileLayout ? "m-maxPrice" : "maxPrice"} class="label">Max</label>
         <input
-          id="maxPrice"
+          id={mobileLayout ? "m-maxPrice" : "maxPrice"}
           type="number"
           min={0}
           max={9999999}
@@ -73,11 +74,11 @@
     </li>
     <li>
       <div>
-        <label for="currencyId" class="label">Currency</label>
+        <label for={mobileLayout ? "m-currencyId" : "currencyId"} class="label">Currency</label>
         <select
           class="select select-bordered select-sm w-full max-w-xs"
           bind:value={currencyId}
-          id="currencyId"
+          id={mobileLayout ? "m-currencyId" : "currencyId"}
         >
           <option selected value={0}>Any</option>
           {#each data.currencies as currency}
@@ -90,11 +91,11 @@
     </li>
     <li>
       <div>
-        <label for="typeId" class="label">Type</label>
+        <label for={mobileLayout ? "m-typeId" : "typeId"} class="label">Type</label>
         <select
           class="select select-bordered select-sm w-full max-w-xs"
           bind:value={typeId}
-          id="typeId"
+          id={mobileLayout ? "m-typeId" : "typeId"}
         >
           <option selected value={0}>Any</option>
           {#each data.types as type}
@@ -107,11 +108,11 @@
     </li>
     <li>
       <div>
-        <label for="statusId" class="label">Status</label>
+        <label for={mobileLayout ? "m-statusId" : "statusId"} class="label">Status</label>
         <select
           class="select select-bordered select-sm w-full max-w-xs"
           bind:value={statusId}
-          id="statusId"
+          id={mobileLayout ? "m-statusId" : "statusId"}
         >
           <option selected value={0}>Any</option>
           {#each data.statuses as status}
@@ -129,7 +130,9 @@
         </button>
       </div>
       <div class="flex">
-        <button class="btn btn-accent min-w-full mx-auto" on:click={filter}> Apply Filters </button>
+        <button class="btn btn-neutral min-w-full mx-auto" on:click={filter}>
+          Apply Filters
+        </button>
       </div>
     </li>
   </ul>

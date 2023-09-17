@@ -21,7 +21,7 @@
       <button on:click={() => filterModal.showModal()} class="btn btn-md">Filters</button>
       <dialog bind:this={filterModal} class="modal text-left">
         <div class="modal-box">
-          <Filters {data} bind:queryString {filterModal} />
+          <Filters {data} bind:queryString {filterModal} mobileLayout={true} />
         </div>
         <form method="dialog" class="modal-backdrop">
           <button>Close</button>

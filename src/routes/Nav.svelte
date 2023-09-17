@@ -14,6 +14,7 @@
   <div class="navbar-start">
     <div class="dropdown dropdown-bottom dropdown-hover">
       <label for="dropdown" tabindex="-1" class="btn btn-ghost sm:hidden">
+        <input id="dropdown" type="checkbox" hidden />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5"
@@ -29,7 +30,6 @@
         >
       </label>
       <ul
-        id="dropdown"
         tabindex="-1"
         class="dropdown-content z-[1000] menu p-2 shadow bg-base-100 rounded-box w-fit"
       >
@@ -41,7 +41,9 @@
         {/if}
       </ul>
     </div>
-    <a href="/" class="btn btn-ghost font-bold normal-case text-lg text-orange-600"> SvelteRE </a>
+    <a href="/" class="btn btn-ghost font-bold normal-case text-lg" style="color:#0DD982">
+      SvelteRE
+    </a>
     <a href="/map" class="btn btn-ghost normal-case text-base hidden sm:flex"> Map </a>
     {#if $page.data.user}
       <a href="/dashboard" class="btn btn-ghost normal-case text-base hidden sm:flex">Dashboard</a>
