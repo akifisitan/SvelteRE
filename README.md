@@ -6,6 +6,9 @@ Real Estate listing website built using [Svelte](https://svelte.dev/) and [Svelt
 
 - I built this project because I wanted to learn Svelte and SvelteKit, and so I ported [RealEstateApp](https://github.com/akifisitan/RealEstateApp) over to use the more performant and intuitive Svelte and it's application framework SvelteKit's SSR and file system based routing.
 
+## Demo
+- Watch the demo on [youtube](https://www.youtube.com/watch?v=t2_k0MQ9zOY)
+
 ## Technologies Used
 
 - [Svelte](https://svelte.dev/)
